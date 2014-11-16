@@ -11,6 +11,7 @@
   ],
   "jsList": [
     "src/resource.js",
+    "src/Strings.js",
     "src/GameConfig.js",
     "src/EFBaseSceneLayer.js",
     "src/EFGameSceneLayer.js",
