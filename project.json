@@ -12,7 +12,13 @@
   "jsList": [
     "src/resource.js",
     "src/Strings.js",
-    "src/GameConfig.js",
+    "src/GameConfig.js",    
+    "src/EFObjFishData.js",
+    "src/EFObjBaseFishNode.js",
+    "src/EFObjBaseEnemyFishNode.js",
+    "src/EFObjEnemyFishNode.js",
+    "src/EFObjJellyfishNode.js",
+    "src/EFObjPlayerNode.js",    
     "src/EFBaseSceneLayer.js",
     "src/EFGameSceneLayer.js",
     "src/EFStartSceneLayer.js"

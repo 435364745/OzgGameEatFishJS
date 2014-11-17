@@ -70,9 +70,9 @@ EFStartSceneLayer.prototype.onButton = function(sender, eventType) {
 			
 		case startSceneTag.btnStart:
 		{
-//			Scene *s = GameLayer::createScene();
-//			TransitionFade *t = TransitionFade::create(GAME_CONFIG_TRANSITION, s);
-//			Director::getInstance()->replaceScene(t);			
+			var layer = new EFGameSceneLayer();
+			var t = cc.TransitionFade(cfg.transition, layer);
+			cc.director.pushScene(t);
 		}			
 			break;
 		case startSceneTag.btnHelp:
@@ -182,19 +182,19 @@ EFStartSceneLayer.prototype.helpVisible = function(visible) {
 			
 		}
 	}
-	else {
+	else {		
 		if(help)
-			help.removeFromParentAndCleanup(true);
+			help.removeFromParent(true);
 		if(helpTitle)
-			helpTitle.removeFromParentAndCleanup(true);
+			helpTitle.removeFromParent(true);
 		if(helpLab1)
-			helpLab1.removeFromParentAndCleanup(true);
+			helpLab1.removeFromParent(true);
 		if(helpLab2)
-			helpLab2.removeFromParentAndCleanup(true);
+			helpLab2.removeFromParent(true);
 		if(helpLab3)
-			helpLab3.removeFromParentAndCleanup(true);
+			helpLab3.removeFromParent(true);
 		if(helpBtnBack)
-			helpBtnBack.removeFromParentAndCleanup(true);
+			helpBtnBack.removeFromParent(true);
 		cc.spriteFrameCache.removeSpriteFramesFromFile(res.Fishtales_plist);
 		cc.textureCache.removeTextureForKey("Fishtales.png");
 		
