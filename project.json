@@ -12,7 +12,8 @@
   "jsList": [
     "src/resource.js",
     "src/Strings.js",
-    "src/GameConfig.js",    
+    "src/GameConfig.js",
+    "src/Ozg2dxJsUtility.js",
     "src/EFObjFishData.js",
     "src/EFObjBaseFishNode.js",
     "src/EFObjBaseEnemyFishNode.js",

@@ -70,18 +70,23 @@ EFStartSceneLayer.prototype.onButton = function(sender, eventType) {
 			
 		case startSceneTag.btnStart:
 		{
-			var layer = new EFGameSceneLayer();
-			var t = cc.TransitionFade(cfg.transition, layer);
+			//开始游戏
+			var s = new EFGameScene();
+			var t = cc.TransitionFade(cfg.transition, s);
 			cc.director.pushScene(t);
 		}			
 			break;
 		case startSceneTag.btnHelp:
+			//点击了帮助按钮
+			
 			cc.audioEngine.playEffect(res.audios_btn_wav);
 			this.mainVisible(false);
 			this.helpVisible(true);
 			
 			break;
 		case startSceneTag.helpBtnBack:
+			//在帮助界面点击了后退按钮
+			
 			cc.audioEngine.playEffect(res.audios_btn_wav);
 			this.mainVisible(true);
 			this.helpVisible(false);
