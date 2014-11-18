@@ -21,8 +21,11 @@ var EFObjBaseFishNode = cc.Node.extend({
 	ctor:function () {		
 		this._super();
 		
+		this.animSpriteList = null;
+		this.animKey = null;
 		this.orientation = EFObjBaseFishNodeOrientation.left;
-		
+		this.isMoving = false;
+				
 		return true;
 	}
 });
