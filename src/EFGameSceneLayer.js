@@ -1,5 +1,5 @@
 
-var gameSceneTag = {
+var EFGameSceneTag = {
 		bg: 1,
 		blisterLeft: 2,
 		blisterRight: 3
@@ -22,18 +22,18 @@ var EFGameSceneLayer = EFBaseSceneLayer.extend({
 				
 		var bg = new cc.Sprite(bgList[i]);
 		bg.setPosition(winSize.width / 2, winSize.height / 2);
-		bg.setTag(gameSceneTag.bg);
+		bg.setTag(EFGameSceneTag.bg);
 		this.addChild(bg);
 		
 		//水泡
 		var blisterLeft = new cc.ParticleSystem(res.particle_sys_blister_plist);
 		blisterLeft.setPosition(winSize.width / 2 - 300, 120);
-		blisterLeft.setTag(gameSceneTag.blisterLeft);
+		blisterLeft.setTag(EFGameSceneTag.blisterLeft);
 		this.addChild(blisterLeft);
 		
 		var blisterRight = new cc.ParticleSystem(res.particle_sys_blister_plist);
 		blisterRight.setPosition(winSize.width / 2 + 300, 120);
-		blisterRight.setTag(gameSceneTag.blisterRight);
+		blisterRight.setTag(EFGameSceneTag.blisterRight);
 		this.addChild(blisterRight);
 		
 		return true;
