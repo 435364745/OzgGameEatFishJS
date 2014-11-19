@@ -47,20 +47,10 @@
  *
  */
 
-//定义本游戏的命名空间
-var eatfish;
-if(!eatfish)
-	eatfish = {};
-if(!eatfish.element)
-	eatfish.element = {};
-if(!eatfish.scene)
-	eatfish.scene = {};
-
 cc.game.onStart = function(){
     cc.view.adjustViewPort(true);
     cc.view.setDesignResolutionSize(960, 640, cc.ResolutionPolicy.SHOW_ALL);
     cc.view.resizeWithBrowserSize(true);
-    cc.director.setDisplayStats(false);
     
     //声音的处理
     if(sys.localStorage.getItem(cfg.bgSound))

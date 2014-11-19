@@ -57,3 +57,12 @@ var cfg = {
 	stageClear: 500 //小鱼+1，中鱼+2，大鱼+3	
 		
 };
+
+//定义本游戏的命名空间
+var eatfish;
+if(!eatfish)
+	eatfish = {};
+if(!eatfish.element)
+	eatfish.element = {};
+if(!eatfish.scene)
+	eatfish.scene = {};
