@@ -11,17 +11,17 @@
   ],
   "jsList": [
     "src/resource.js",
-    "src/Strings.js",
-    "src/GameConfig.js",
-    "src/Ozg2dxJsUtility.js",
-    "src/EFObjFishData.js",
-    "src/EFObjBaseFishNode.js",
-    "src/EFObjBaseEnemyFishNode.js",
-    "src/EFObjEnemyFishNode.js",
-    "src/EFObjJellyfishNode.js",
-    "src/EFObjPlayerNode.js",    
-    "src/EFBaseSceneLayer.js",
-    "src/EFGameSceneLayer.js",
-    "src/EFStartSceneLayer.js"
+    "src/ozgjs/Utility.js",
+    "src/eatfish/Strings.js",
+    "src/eatfish/GameConfig.js",    
+    "src/eatfish/element/FishData.js",
+    "src/eatfish/element/BaseFishNode.js",
+    "src/eatfish/element/BaseEnemyFishNode.js",
+    "src/eatfish/element/EnemyFishNode.js",
+    "src/eatfish/element/JellyfishNode.js",
+    "src/eatfish/element/PlayerNode.js",    
+    "src/eatfish/scene/BaseLayer.js",
+    "src/eatfish/scene/GameLayer.js",
+    "src/eatfish/scene/StartLayer.js"
   ]
 }

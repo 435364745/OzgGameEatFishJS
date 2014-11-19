@@ -47,6 +47,15 @@
  *
  */
 
+//定义本游戏的命名空间
+var eatfish;
+if(!eatfish)
+	eatfish = {};
+if(!eatfish.element)
+	eatfish.element = {};
+if(!eatfish.scene)
+	eatfish.scene = {};
+
 cc.game.onStart = function(){
     cc.view.adjustViewPort(true);
     cc.view.setDesignResolutionSize(960, 640, cc.ResolutionPolicy.SHOW_ALL);
@@ -67,7 +76,7 @@ cc.game.onStart = function(){
     
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
-    	cc.director.runScene(new EFStartScene());
+    	cc.director.runScene(new eatfish.scene.StartScene());
     }, this);
 };
 cc.game.run();
