@@ -6,14 +6,14 @@
 //isMoving
 
 eatfish.element.BaseFishNodeTag = {
-		fish: 1,
-		centerPoint: 2,
-		cump: 3
+	fish: 1,
+	centerPoint: 2,
+	cump: 3
 };
 
 eatfish.element.BaseFishNodeOrientation = {
-		left: 1,
-		right: 2
+	left: 1,
+	right: 2
 };
 
 eatfish.element.BaseFishNode = cc.Node.extend({
@@ -62,8 +62,8 @@ eatfish.element.BaseFishNode.prototype.cump = function() {
 	//随机的cump精灵
 	var cumpList = [ "cump1.png", "cump2.png", "cump3.png", "cump4.png", "cump5.png" ];
 	var i = rangeRandom(0, cumpList.length - 1);
-	
-	chumSprite = cc.Sprite.createWithSpriteFrameName(cumpList[i]);
+
+	chumSprite = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame(cumpList[i]));
 	
 	//定义左边或右边的位置
 	if(this.orientation == eatfish.element.BaseFishNodeOrientation.left)

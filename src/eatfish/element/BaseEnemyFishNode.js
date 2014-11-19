@@ -20,7 +20,7 @@ eatfish.element.BaseEnemyFishNode = eatfish.element.BaseFishNode.extend({
 });
 
 eatfish.element.BaseEnemyFishNode.prototype.paralysis = function() {
-	EFObjBaseFishNode.prototype.pause.call(this);
+	eatfish.element.BaseFishNode.prototype.pause.call(this);
 	this.unscheduleUpdate();
 };
 
