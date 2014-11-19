@@ -5,34 +5,34 @@
 //orientation
 //isMoving
 
-var EFObjBaseFishNodeTag = {
+eatfish.element.BaseFishNodeTag = {
 		fish: 1,
 		centerPoint: 2,
 		cump: 3
 };
 
-var EFObjBaseFishNodeOrientation = {
+eatfish.element.BaseFishNodeOrientation = {
 		left: 1,
 		right: 2
 };
 
-var EFObjBaseFishNode = cc.Node.extend({
+eatfish.element.BaseFishNode = cc.Node.extend({
 	sprite:null,
 	ctor:function () {		
 		this._super();
 		
 		this.animSpriteList = null;
 		this.animKey = null;
-		this.orientation = EFObjBaseFishNodeOrientation.left;
+		this.orientation = eatfish.element.BaseFishNodeOrientation.left;
 		this.isMoving = false;
 				
 		return true;
 	}
 });
 
-EFObjBaseFishNode.prototype.centerRect = function() {
+eatfish.element.BaseFishNode.prototype.centerRect = function() {
 
-	var center = this.getChildByTag(EFObjBaseFishNodeTag.centerPoint);
+	var center = this.getChildByTag(eatfish.element.BaseFishNodeTag.centerPoint);
 	if(!center)
 		return cc.rect(0, 0, 0, 0);
 	var point = center.boundingBox().origin;
@@ -40,20 +40,20 @@ EFObjBaseFishNode.prototype.centerRect = function() {
 	return cc.rect(point.x, point.y, center.getContentSize().width, center.getContentSize().height);	
 };
 
-EFObjBaseFishNode.prototype.orientationLeft = function() {
-	this.orientation = EFObjBaseFishNodeOrientation.left;
-	var fish = this.getChildByTag(EFObjBaseFishNodeTag.fish);
+eatfish.element.BaseFishNode.prototype.orientationLeft = function() {
+	this.orientation = eatfish.element.BaseFishNodeOrientation.left;
+	var fish = this.getChildByTag(eatfish.element.BaseFishNodeTag.fish);
 	fish.setFlippedX(false);
 };
 
-EFObjBaseFishNode.prototype.orientationRight = function() {
-	this.orientation = EFObjBaseFishNodeOrientation.right;
-	var fish = this.getChildByTag(EFObjBaseFishNodeTag.fish);
+eatfish.element.BaseFishNode.prototype.orientationRight = function() {
+	this.orientation = eatfish.element.BaseFishNodeOrientation.right;
+	var fish = this.getChildByTag(eatfish.element.BaseFishNodeTag.fish);
 	fish.setFlippedX(true);
 };
 
-EFObjBaseFishNode.prototype.cump = function() {
-	var chumSprite = this.getChildByTag(EFObjBaseFishNodeTag.cump);
+eatfish.element.BaseFishNode.prototype.cump = function() {
+	var chumSprite = this.getChildByTag(eatfish.element.BaseFishNodeTag.cump);
 	if(chumSprite) {
 		chumSprite.stopAllActions();
 		chumSprite.removeFromParentAndCleanup(true);
@@ -66,23 +66,23 @@ EFObjBaseFishNode.prototype.cump = function() {
 	chumSprite = cc.Sprite.createWithSpriteFrameName(cumpList[i]);
 	
 	//定义左边或右边的位置
-	if(this.orientation == EFObjBaseFishNodeOrientation.left)
+	if(this.orientation == eatfish.element.BaseFishNodeOrientation.left)
 		chumSprite.setPosition(-chumSprite.getContentSize().width / 2, this.getContentSize().height / 2);
 	else
 		chumSprite.setPosition(this.getContentSize().width + (chumSprite.getContentSize().width / 2), this.getContentSize().height / 2);
 
-	chumSprite.setTag(EFObjBaseFishNodeTag.cump);
+	chumSprite.setTag(eatfish.element.BaseFishNodeTag.cump);
 	this.addChild(chumSprite);
 	chumSprite.runAction(cc.Sequence.create(cc.DelayTime.create(0.2), cc.CallFunc.create(this.cumpAutoHide, this, chumSprite)));
 
 };
 
-EFObjBaseFishNode.prototype.paralysis = function() {
+eatfish.element.BaseFishNode.prototype.paralysis = function() {
 	if(!this.isMoving)
 		return;
 	this.isMoving = false;
 	this.stopAllActions();
-	var fish = this.getChildByTag(EFObjBaseFishNodeTag.fish);
+	var fish = this.getChildByTag(eatfish.element.BaseFishNodeTag.fish);
 	if(fish)
 		fish.stopAllActions();
 	var act1 = cc.MoveBy.create(0.01, cc.p(-3, 0));
@@ -93,37 +93,37 @@ EFObjBaseFishNode.prototype.paralysis = function() {
 	this.runAction(cc.Sequence.create(act1, act2, act3, act4, cc.DelayTime.create(5.0), cc.CallFunc.create(this.paralysisEnd, this, this)));
 };
 
-EFObjBaseFishNode.prototype.pause = function() {
-	if(this.getChildByTag(EFObjBaseFishNodeTag.fish))
-		this.getChildByTag(EFObjBaseFishNodeTag.fish).pause();
-	if(this.getChildByTag(EFObjBaseFishNodeTag.cump))
-		this.getChildByTag(EFObjBaseFishNodeTag.cump).pause();
+eatfish.element.BaseFishNode.prototype.pause = function() {
+	if(this.getChildByTag(eatfish.element.BaseFishNodeTag.fish))
+		this.getChildByTag(eatfish.element.BaseFishNodeTag.fish).pause();
+	if(this.getChildByTag(eatfish.element.BaseFishNodeTag.cump))
+		this.getChildByTag(eatfish.element.BaseFishNodeTag.cump).pause();
 
 	cc.Node.prototype.pause.call(this);
 };
 
-EFObjBaseFishNode.prototype.resume = function() {
-	if(this.getChildByTag(EFObjBaseFishNodeTag.fish))
-		this.getChildByTag(EFObjBaseFishNodeTag.fish).resume();
-	if(this.getChildByTag(EFObjBaseFishNodeTag.cump))
-		this.getChildByTag(EFObjBaseFishNodeTag.cump).resume();
+eatfish.element.BaseFishNode.prototype.resume = function() {
+	if(this.getChildByTag(eatfish.element.BaseFishNodeTag.fish))
+		this.getChildByTag(eatfish.element.BaseFishNodeTag.fish).resume();
+	if(this.getChildByTag(eatfish.element.BaseFishNodeTag.cump))
+		this.getChildByTag(eatfish.element.BaseFishNodeTag.cump).resume();
 
 	cc.Node.prototype.resume.call(this);
 };
 
-EFObjBaseFishNode.prototype.cumpAutoHide = function(sender) {
+eatfish.element.BaseFishNode.prototype.cumpAutoHide = function(sender) {
 	sender.stopAllActions();
 	sender.removeFromParent(true);
 };
 
-EFObjBaseFishNode.prototype.paralysisEnd = function(sender) {
+eatfish.element.BaseFishNode.prototype.paralysisEnd = function(sender) {
 	this.playAnim();
 	this.isMoving = true;
 };
 
-EFObjBaseFishNode.prototype.playAnim = function() {
+eatfish.element.BaseFishNode.prototype.playAnim = function() {
 	var anim = cc.animationCache.getAnimation(this.animKey);
-	var fish = this.getChildByTag(EFObjBaseFishNodeTag.fish);
+	var fish = this.getChildByTag(eatfish.element.BaseFishNodeTag.fish);
 	if(!anim) {
 		var frames = new Array();
 		

@@ -1,4 +1,6 @@
 
+//配置部分
+
 var cfg = {
 		version: "1.0.0",
 		transition: 0.5, //过场时间

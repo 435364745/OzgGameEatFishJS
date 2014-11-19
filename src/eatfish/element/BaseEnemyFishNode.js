@@ -5,7 +5,7 @@
 //moveEndPoint
 //moveTimeElapsed
 
-var EFObjBaseEnemyFishNode = EFObjBaseFishNode.extend({
+eatfish.element.BaseEnemyFishNode = eatfish.element.BaseFishNode.extend({
 	sprite:null,
 	ctor:function () {		
 		this._super();
@@ -19,17 +19,17 @@ var EFObjBaseEnemyFishNode = EFObjBaseFishNode.extend({
 	}
 });
 
-EFObjBaseEnemyFishNode.prototype.paralysis = function() {
+eatfish.element.BaseEnemyFishNode.prototype.paralysis = function() {
 	EFObjBaseFishNode.prototype.pause.call(this);
 	this.unscheduleUpdate();
 };
 
-EFObjBaseEnemyFishNode.prototype.update = function(delta) {
+eatfish.element.BaseEnemyFishNode.prototype.update = function(delta) {
 	this.moveTimeElapsed += delta;
 };
 
-EFObjBaseEnemyFishNode.prototype.paralysisEnd = function(sender) {
-	EFObjBaseFishNode.prototype.paralysisEnd.call(this, sender);
+eatfish.element.BaseEnemyFishNode.prototype.paralysisEnd = function(sender) {
+	eatfish.element.BaseFishNode.prototype.paralysisEnd.call(this, sender);
 	
 	//继续移动
 	this.scheduleUpdate();

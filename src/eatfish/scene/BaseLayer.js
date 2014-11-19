@@ -1,5 +1,5 @@
 
-var EFBaseSceneLayer = cc.Layer.extend({
+eatfish.scene.BaseLayer = cc.Layer.extend({
 	sprite:null,
 	ctor:function () {		
 		this._super();
