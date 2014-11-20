@@ -86,7 +86,7 @@ eatfish.element.PlayerNode.prototype.changeStatus = function(status) {
 			//test.setScale(0.5);
 			break;
 	}
-	eatfish.element.BaseFishNode.prototype.playAnim.call(this);
+	this.playAnim();
 	
 };
 
