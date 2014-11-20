@@ -133,22 +133,118 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		fishLifeLab.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
 		fishLifeLab.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		this.addChild(fishLifeLab);
-				
-//		this.enabledTouchEvent(false);
+		
+		cc.eventManager.addListener({
+			event: cc.EventListener.TOUCH_ONE_BY_ONE,
+			onTouchBegan: this.onLayerTouchBegan,
+			onTouchMoved: this.onLayerTouchMoved,
+			onTouchEnded: this.onLayerTouchEnded
+		}, this);
+		this.enabledTouchEvent(false);
 		
 		//player
-//		var player = new eatfish.element.PlayerNode();
-//		player.setPosition(winSize.width / 2, 300);
-//		player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
-//		fishNode.addChild(player, 99999);
-//		player.invincible();
+		var player = new eatfish.element.PlayerNode();
+		player.setPosition(winSize.width / 2, 800);
+		player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
+		fishNode.addChild(player, 99999);
+		player.invincible();
 
 		//配合过场的时间，所以延时执行这个方法
-//		this.scheduleOnce(this.gameStart, cfg.transition);
-		
+		this.scheduleOnce(this.gameStart, cfg.transition);
+
 		return true;
 	}
 });
+
+eatfish.scene.GameLayer.prototype.update = function(delay) {
+	var winSize = cc.director.getWinSize();
+	
+	var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+	if(!fishNode)
+		return;
+
+	//水母
+	if(Math.random() <= cfg.enemyJellyFish) {
+
+	}
+
+};
+
+eatfish.scene.GameLayer.prototype.enemyFishMoveEnd = function(sneder) {
+	sender.removeFromParent(true);
+};
+
+eatfish.scene.GameLayer.prototype.gameStart = function(delay) {
+	cc.audioEngine.playEffect(res.audios_fishstart_mp3);
+
+	var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+	var player = fishNode.getChildByTag(eatfish.scene.GameLayerTag.fishPlayer);
+	player.runAction(cc.Sequence.create(cc.MoveBy.create(1.0, cc.p(0, -400)), cc.CallFunc.create(this.gameStartCallback, this)));
+};
+
+eatfish.scene.GameLayer.prototype.gameStartCallback = function() {
+	this.enabledTouchEvent(true);
+	var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+	var player = fishNode.getChildByTag(eatfish.scene.GameLayerTag.fishPlayer);
+	player.isMoving = true;
+	
+	//随机性质的事件和AI都在这里计算
+	this.scheduleUpdate();
+};
+
+eatfish.scene.GameLayer.prototype.enabledTouchEvent = function(enabled) {
+	
+	cc.eventManager.setEnabled(enabled);
+	
+	var btnPause = this.getChildByTag(eatfish.scene.GameLayerTag.btnPause);
+	btnPause.setEnabled(enabled);
+		
+};
+
+eatfish.scene.GameLayer.prototype.onLayerTouchBegan = function(touch, event) {
+	
+	return true;
+};
+
+eatfish.scene.GameLayer.prototype.onLayerTouchMoved = function(touch, event) {
+	
+	var winSize = cc.director.getWinSize();
+	
+	var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+	
+	var player = fishNode.getChildByTag(eatfish.scene.GameLayerTag.fishPlayer);
+	
+	if(player && player.isMoving) {
+		var beginPoint = touch.getLocation();
+		var endPoint = touch.getPreviousLocation();
+		var offSet = cc.pSub(beginPoint, endPoint);
+		var toPoint = cc.pAdd(player.getPosition(), offSet);
+		
+		var toX = player.getPosition().x;
+		var toY = player.getPosition().y;
+		
+		var rect = player.centerRect();
+		var moveRect = cc.rect(rect.width / 2, rect.height / 2, winSize.width - (rect.width / 2), winSize.height - (rect.height / 2));
+		
+		//如果toPoint的x存在moveRect的宽度范围里面则x为可移动，y的情况一样
+		if(toPoint.x >= moveRect.x && toPoint.x <= moveRect.width)
+			toX = toPoint.x;
+		if(toPoint.y >= moveRect.y && toPoint.y <= moveRect.height)
+			toY = toPoint.y;
+		
+		player.setPosition(toX, toY);
+		
+		if(offSet.x > 0)
+			player.orientationRight(); //向右移动则转向右边
+		else if(offSet.x < 0)
+			player.orientationLeft(); //向左移动则转向左边
+		
+	}
+};
+
+eatfish.scene.GameLayer.prototype.onLayerTouchEnded = function(touch, event) {
+	
+};
 
 eatfish.scene.GameScene = cc.Scene.extend({
 	onEnter:function () {

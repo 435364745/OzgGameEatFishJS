@@ -93,7 +93,7 @@ eatfish.element.PlayerNode.prototype.changeStatus = function(status) {
 eatfish.element.PlayerNode.prototype.invincible = function() {
 	this.isInvincible = true;
 	//水泡
-	var water = new cc.Sprite("water1.png");
+	var water = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("water1.png"));
 	water.setPosition(this.getContentSize().width / 2, this.getContentSize().height / 2);
 	water.setScale(5.0);
 	water.setTag(eatfish.element.PlayerNodeTag.water);
