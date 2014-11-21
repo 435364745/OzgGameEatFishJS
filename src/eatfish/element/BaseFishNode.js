@@ -35,7 +35,7 @@ eatfish.element.BaseFishNode.prototype.centerRect = function() {
 	var center = this.getChildByTag(eatfish.element.BaseFishNodeTag.centerPoint);
 	if(!center)
 		return cc.rect(0, 0, 0, 0);
-	var point = center.boundingBox().origin;
+	var point = cc.p(center.getBoundingBox().x, center.getBoundingBox().y);
 	point = this.convertToWorldSpace(point);
 	return cc.rect(point.x, point.y, center.getContentSize().width, center.getContentSize().height);	
 };
