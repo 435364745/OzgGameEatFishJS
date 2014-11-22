@@ -14,7 +14,7 @@ eatfish.element.JellyfishNode = eatfish.element.BaseEnemyFishNode.extend({
 		jellyfish.setTag(eatfish.element.BaseFishNodeTag.fish);
 		this.addChild(jellyfish);
 		
-		this.setAnchorPoint(Vec2(0.5, 0.5));
+		this.setAnchorPoint(0.5, 0.5);
 		this.setContentSize(jellyfish.getContentSize());
 		
 		var center = new cc.Node();

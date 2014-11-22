@@ -90,7 +90,17 @@ eatfish.element.BaseFishNode.prototype.paralysis = function() {
 	var act3 = act2.reverse();
 	var act4 = cc.MoveBy.create(0.01, cc.p(3, 0));
 	//麻痹5秒后恢复正常
-	this.runAction(cc.Sequence.create(act1, act2, act3, act4, cc.DelayTime.create(5.0), cc.CallFunc.create(this.paralysisEnd, this, this)));
+	this.runAction(cc.Sequence.create(
+			act1, 
+			act2, 
+			act3, 
+			act4, 
+			cc.DelayTime.create(5.0), 
+			cc.CallFunc.create(function() {
+				this.playAnim();
+				this.isMoving = true;
+			}, this)
+	));
 };
 
 eatfish.element.BaseFishNode.prototype.pause = function() {
@@ -114,11 +124,6 @@ eatfish.element.BaseFishNode.prototype.resume = function() {
 eatfish.element.BaseFishNode.prototype.cumpAutoHide = function(sender) {
 	sender.stopAllActions();
 	sender.removeFromParent(true);
-};
-
-eatfish.element.BaseFishNode.prototype.paralysisEnd = function(sender) {
-	this.playAnim();
-	this.isMoving = true;
 };
 
 eatfish.element.BaseFishNode.prototype.playAnim = function() {

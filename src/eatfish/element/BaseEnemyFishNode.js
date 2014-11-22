@@ -28,13 +28,13 @@ eatfish.element.BaseEnemyFishNode.prototype.update = function(delta) {
 	this.moveTimeElapsed += delta;
 };
 
-eatfish.element.BaseEnemyFishNode.prototype.paralysisEnd = function(sender) {
-	eatfish.element.BaseFishNode.prototype.paralysisEnd.call(this, sender);
-	
-	//继续移动
-	this.scheduleUpdate();
-	
-	var gameSceneLayer = this.getParent().getParent();
-//	this.runAction(cc.Sequence.create(cc.MoveTo.create(this.moveTime - this.moveTimeElapsed, this.moveEndPoint), cc.CallFunc.create(gameSceneLayer.enemyFishMoveEnd, gameSceneLayer, this)));
-
-};
+//eatfish.element.BaseEnemyFishNode.prototype.paralysisEnd = function(sender) {
+//	eatfish.element.BaseFishNode.prototype.paralysisEnd.call(this, sender);
+//	
+//	//继续移动
+//	this.scheduleUpdate();
+//	
+//	var gameSceneLayer = this.getParent().getParent();
+////	this.runAction(cc.Sequence.create(cc.MoveTo.create(this.moveTime - this.moveTimeElapsed, this.moveEndPoint), cc.CallFunc.create(gameSceneLayer.enemyFishMoveEnd, gameSceneLayer, this)));
+//
+//};

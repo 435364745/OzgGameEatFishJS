@@ -9,6 +9,7 @@
 //eatFishTotalType4 //吃了Type4的鱼的总数
 //playerLife
 //bg
+//touchEventObj
 
 eatfish.scene.GameLayerTag = {
 	bg: 1,
@@ -44,6 +45,8 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		this.stageNum = 0;
 		this.score = 0;
 		this.playerLife = cfg.player;
+		
+		this.isTouchEnabled = false;
 		
 		cc.spriteFrameCache.addSpriteFrames(res.Fishtales_plist);
 		cc.spriteFrameCache.addSpriteFrames(res.Fishall_plist);
@@ -108,7 +111,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		btnPause.loadTextureNormal(res.pause_up_png);
 		btnPause.loadTexturePressed(res.pause_dw_png);
 		btnPause.setPosition(winSize.width - 120, winSize.height - 100);
-//		btnPause.addTouchEventListener(this.onButton, this);
+		btnPause.addTouchEventListener(this.onButton, this);
 		btnPause.setTag(eatfish.scene.GameLayerTag.btnPause);
 		this.addChild(btnPause);
 				
@@ -150,7 +153,6 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 			onTouchMoved: this.onLayerTouchMoved,
 			onTouchEnded: this.onLayerTouchEnded
 		}, this);
-		this.enabledTouchEvent(false);
 		
 		//player
 		var player = new eatfish.element.PlayerNode();
@@ -175,20 +177,397 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 
 	//水母
 	if(Math.random() <= cfg.enemyJellyFish) {
+		var enemyFishNode = new eatfish.element.JellyfishNode();
+
+		var minVal = enemyFishNode.getContentSize().width / 2;
+		var maxVal = winSize.width - (enemyFishNode.getContentSize().width / 2);
+
+		var srcX = maxVal - minVal;
+		srcX = minVal + (srcX * Math.random());
+
+		enemyFishNode.setPosition(Vec2(srcX, -enemyFishNode.getContentSize().height / 2));
+		fishNode.addChild(enemyFishNode);
+
+		var moveTime = 15.0 - 10.0;
+		moveTime = 10.0 + (moveTime * CCRANDOM_0_1());
+
+		enemyFishNode.runAction(cc.Sequence.create(
+				cc.MoveTo.create(moveTime, cc.p(srcX, winSize.height + (enemyFishNode.getContentSize().height / 2))), 
+				cc.CallFunc.create(function() {
+					enemyFishNode.removeFromParent(true);
+				}, this)
+		));
 
 	}
 
-};
+	//fish1
+	if(Math.random() <= cfg.enemyFish1) {
+		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish1);
+		this.enemyFishEmergence(enemyFishNode);
+	}
 
-eatfish.scene.GameLayer.prototype.enemyFishMoveEnd = function(sneder) {
-	sender.removeFromParent(true);
+	//fish2
+	if(Math.random() <= cfg.enemyFish2) {
+		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish2);
+		this.enemyFishEmergence(enemyFishNode);
+	}
+
+	//fish3
+	if(Math.random() <= cfg.enemyFish3) {
+		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish3);
+		this.enemyFishEmergence(enemyFishNode);
+	}
+
+	//fish4
+	if(Math.random() <= cfg.enemyFish4) {
+		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish4);
+		this.enemyFishEmergence(enemyFishNode);
+	}
+
+	//fish5
+	if(Math.random() <= cfg.enemyFish5) {
+		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish5);
+		this.enemyFishEmergence(enemyFishNode);
+	}
+
+	//fish6
+	if(Math.random() <= cfg.enemyFish6) {
+		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish6);
+		this.enemyFishEmergence(enemyFishNode);
+	}
+	
+	//以下是碰撞
+	var nodeList = fishNode.getChildren();
+	for (var i = 0; i < nodeList.length; i++) {
+		var srcObj = nodeList[i];
+		var srcCenter = srcObj.centerRect();
+		
+		for (var j = 0; j < nodeList.length; j++) {
+			var targetObj = nodeList[j];
+			var targetCenter = targetObj.centerRect();
+			
+			if (cc.rectContainsRect(srcCenter, targetCenter)) {
+				cc.log(typeof(srcObj) + " " + typeof(targetObj));
+			}
+		}
+		
+	}
+	
 };
 
 eatfish.scene.GameLayer.prototype.scenePause = function() {
+
+	if(this.getChildByTag(eatfish.scene.GameLayerTag.pauseNode))
+		return;
+
+	var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+	if(fishNode) {
+		var nodeList = fishNode.getChildren();
+		for(var i = 0; i < nodeList.length; i++) {
+			var fishChildren = nodeList[i].getChildren();
+			for(var j = 0; j < fishChildren.length; j++) {
+				fishChildren[j].pause();
+			}
+			nodeList[i].pause();
+		}			
+		
+		var winSize = cc.director.getWinSize();
+
+		this.enabledTouchEvent(false);
+
+		//暂停界面
+		var pauseBg = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("pausebg.png"));
+		pauseBg.setPosition(pauseBg.getContentSize().width / 2, pauseBg.getContentSize().height / 2);
+
+		var pauseNode = new cc.Node();
+		pauseNode.setAnchorPoint(0.5, 0.5);
+		pauseNode.setContentSize(pauseBg.getContentSize());
+		pauseNode.setPosition(winSize.width / 2, winSize.height / 2);
+		pauseNode.setTag(eatfish.scene.GameLayerTag.pauseNode);
+		this.addChild(pauseNode);
+
+		pauseNode.addChild(pauseBg);
+
+		var btnResume = new ccui.Button();
+		btnResume.loadTextureNormal(res.btn1_up_png);
+		btnResume.loadTexturePressed(res.btn1_dw_png);
+		btnResume.setPosition(180, 370);
+		btnResume.addTouchEventListener(this.onButton, this);
+		btnResume.setTag(eatfish.scene.GameLayerTag.btnResume);
+		btnResume.setTitleFontName(cfg.globalFontName01);
+		btnResume.setTitleFontSize(22.0);
+		btnResume.setTitleText(strings.pauseResume);
+		pauseNode.addChild(btnResume);
+		
+		var btnSound = new ccui.Button();
+		btnSound.loadTextureNormal(res.btn1_up_png);
+		btnSound.loadTexturePressed(res.btn1_dw_png);
+		btnSound.setPosition(180, 264);
+		btnSound.addTouchEventListener(this.onButton, this);
+		btnSound.setTag(eatfish.scene.GameLayerTag.btnSound);
+		btnSound.setTitleFontName(cfg.globalFontName01);
+		btnSound.setTitleFontSize(22.0);		
+		pauseNode.addChild(btnSound);
+		
+		if(sys.localStorage.getItem(cfg.bgSound))
+			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
+		else
+			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
+
+		pauseNode.addChild(btnSound);
+
+		var btnEffect = new ccui.Button();
+		btnEffect.loadTextureNormal(res.btn1_up_png);
+		btnEffect.loadTexturePressed(res.btn1_dw_png);
+		btnEffect.setPosition(180, 157);
+		btnEffect.addTouchEventListener(this.onButton, this);
+		btnEffect.setTag(eatfish.scene.GameLayerTag.btnEffect);
+		btnEffect.setTitleFontName(cfg.globalFontName01);
+		btnEffect.setTitleFontSize(22.0);		
+		pauseNode.addChild(btnEffect);
+
+		if(sys.localStorage.getItem(cfg.effectSound))
+			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
+		else
+			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
+
+		pauseNode.addChild(btnEffect);
+		
+		var btnExit = new ccui.Button();
+		btnExit.loadTextureNormal(res.btn1_up_png);
+		btnExit.loadTexturePressed(res.btn1_dw_png);
+		btnExit.setPosition(180, 50);
+		btnExit.addTouchEventListener(this.onButton, this);
+		btnExit.setTag(eatfish.scene.GameLayerTag.btnExit);
+		btnExit.setTitleFontName(cfg.globalFontName01);
+		btnExit.setTitleFontSize(22.0);
+		btnExit.setTitleText(strings.pauseExit);
+		pauseNode.addChild(btnExit);
+				
+		var labGithub = new ccui.TextField();
+		labGithub.setString("github:https://github.com/ouzhigang/OzgGameEatFishJS");
+		labGithub.setFontName(cfg.globalFontName01);
+		labGithub.setFontSize(20);
+		labGithub.setPosition(650, 210);
+		pauseNode.addChild(labGithub);
+		
+    }
+    
+    this.unscheduleUpdate();
 	
 };
 
 eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
+	
+	switch(eventType) {
+	case ccui.Widget.TOUCH_BEGAN:
+
+		break;
+	case ccui.Widget.TOUCH_MOVED:
+
+		break;
+	case ccui.Widget.TOUCH_ENDED:
+		switch(sender.getTag()) {
+		case eatfish.scene.GameLayerTag.btnPause:
+		{
+			//暂停游戏
+			cc.audioEngine.playEffect(res.audios_btn_wav);
+
+			this.scenePause();                    
+		}
+			break;
+		case eatfish.scene.GameLayerTag.btnResume:
+		{
+			//继续游戏
+
+			cc.audioEngine.playEffect(res.audios_btn_wav);
+
+			var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+			if(fishNode) {
+				var nodeList = fishNode.getChildren();
+				
+				for(var i = 0; i < nodeList.length; i++) {
+					
+					var fishChildren = nodeList[i].getChildren();
+					
+					for(var j = 0; j < fishChildren.length; j++) {
+						fishChildren[j].resume();
+					}
+					
+					nodeList[i].resume();
+				}
+
+			}
+
+			this.scheduleUpdate();
+			this.enabledTouchEvent(true);
+
+			var pauseNode = this.getChildByTag(eatfish.scene.GameLayerTag.pauseNode);
+			if(pauseNode)
+				pauseNode.removeFromParent(true);
+
+		}
+			break;
+		case eatfish.scene.GameLayerTag.btnSound:
+		{
+			//背景音乐
+			if(!sys.localStorage.getItem(cfg.bgSound)) {
+				cc.audioEngine.setMusicVolume(1.0);				
+				sys.localStorage.setItem(cfg.bgSound, true);
+				sender.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
+				
+			}
+			else {
+				cc.audioEngine.setMusicVolume(0.0);
+				sys.localStorage.setItem(cfg.bgSound, false);
+				sender.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
+				
+			}
+
+		}
+			break;	
+		case eatfish.scene.GameLayerTag.btnEffect:
+		{
+			//效果声音
+			if(!sys.localStorage.getItem(cfg.effectSound)) {
+				cc.audioEngine.setEffectsVolume(1.0);
+				sys.localStorage.setItem(cfg.effectSound, true);
+				sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
+				
+			}
+			else {
+				cc.audioEngine.setEffectsVolume(0.0);
+				sys.localStorage.setItem(cfg.effectSound, false);				
+				sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
+				
+			}
+
+		}
+			break;
+		case eatfish.scene.GameLayerTag.btnExit:
+		{			
+			//退出游戏
+			var maskLayer = new cc.LayerColor(cc.color(0, 0, 0, 180), cc.director.getWinSize().width, cc.director.getWinSize().height);
+			maskLayer.setTag(eatfish.scene.GameLayerTag.mask);
+			maskLayer.setPosition(cc.p(0, 0));
+			this.addChild(maskLayer);
+
+			var pauseNode = this.getChildByTag(eatfish.scene.GameLayerTag.pauseNode);
+			var clearNode = this.getChildByTag(eatfish.scene.GameLayerTag.clearNode);
+			var gameoverNode = this.getChildByTag(eatfish.scene.GameLayerTag.gameoverNode);
+
+			if(pauseNode) {
+				var btnResume = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnResume);
+				btnResume.setEnabled(false);
+
+				var btnSound = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnSound);
+				btnSound.setEnabled(false);
+
+				var btnEffect = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnEffect);
+				btnEffect.setEnabled(false);
+
+				var btnExit = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
+				btnExit.setEnabled(false);
+			}
+
+			if(clearNode) {
+				var btnExit = clearNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
+				btnExit.setEnabled(false);
+
+				var btnNext = clearNode.getChildByTag(eatfish.scene.GameLayerTag.btnNext);
+				btnNext.setEnabled(false);
+			}
+
+			if(gameoverNode) {
+				var btnExit = gameoverNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
+				btnExit.setEnabled(false);
+
+				var btnRestart = gameoverNode.getChildByTag(eatfish.scene.GameLayerTag.btnRestart);
+				btnRestart.setEnabled(false);
+			}
+
+			var dialog = new eatfish.element.DialogNode(strings.title, strings.settingsExitDialog, strings.dialogBtnNo, cc.CallFunc.create(this.onDialogBtnNo, this), strings.dialogBtnYes, cc.CallFunc.create(this.onDialogBtnYes, this));
+			dialog.setPosition(this.getContentSize().width / 2, this.getContentSize().height / 2);
+			this.addChild(dialog);
+		}
+			break;
+		case eatfish.scene.GameLayerTag.btnNext:
+		{
+			//下一关
+
+			this.stageNum += 1;
+			if(this.stageNum > cfg.maxStage)
+				this.stageNum = cfg.maxStage;
+
+			var stageNumLab = this.getChildByTag(eatfish.scene.GameLayerTag.labStageNum);
+			stageNumLab.setString(strings.gameSceneLabStageNum + this.stageNum.toString());
+
+			this.eatFish = 0;
+			this.eatFishTotal = 0;
+			this.eatFishTotalType1And2 = 0;
+			this.eatFishTotalType3 = 0;
+			this.eatFishTotalType4 = 0;
+
+			var progress = this.getChildByTag(eatfish.scene.GameLayerTag.progress);
+			progress.setPercentage(0);
+
+			var clearNode = this.getChildByTag(eatfish.scene.GameLayerTag.clearNode);
+			clearNode.removeFromParent(true);
+			
+			var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+			var player = new eatfish.element.PlayerNode();
+			player.setPosition(cc.director.getWinSize().width / 2, 800);
+			player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
+			fishNode.addChild(player, 99999);
+			player.invincible();
+			
+			this.gameStart(cfg.transition);
+		}
+			break;
+		case eatfish.scene.GameLayerTag.btnRestart:
+		{
+			//重新开始
+
+			this.score = 0;
+			this.stageNum = 1;
+			this.playerLife = cfg.player;
+			this.eatFish = 0;
+			this.eatFishTotal = 0;
+			this.eatFishTotalType1And2 = 0;
+			this.eatFishTotalType3 = 0;
+			this.eatFishTotalType4 = 0;
+
+			var stageNumLab = this.getChildByTag(eatfish.scene.GameLayerTag.labStageNum);
+			stageNumLab.setString(strings.gameSceneLabStageNum + this.stageNum.toString());
+
+			var scoreLab = this.getChildByTag(eatfish.scene.GameLayerTag.labScore);
+			scoreLab.setString(strings.gameSceneLabScore + this.score.toString());
+
+			var fishLifeLab = this.getChildByTag(eatfish.scene.GameLayerTag.labFishLife);
+			fishLifeLab.setString(this.playerLife.toString());
+
+			var progress = this.getChildByTag(eatfish.scene.GameLayerTag.progress);
+			progress.setPercentage(0);
+
+			var gameoverNode = this.getChildByTag(eatfish.scene.GameLayerTag.gameoverNode);
+			gameoverNode.removeFromParent(true);
+			
+			var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+			var player = new eatfish.element.PlayerNode();
+			player.setPosition(cc.director.getWinSize().width / 2, 800);
+			player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
+			fishNode.addChild(player, 99999);
+			player.invincible();
+
+			this.gameStart(cfg.transition);
+		}
+			break;
+		default:
+			break;
+		}
+
+		break;
+	}
 	
 };
 
@@ -240,8 +619,7 @@ eatfish.scene.GameLayer.prototype.gameRestartCallback = function() {
 };
 
 eatfish.scene.GameLayer.prototype.enabledTouchEvent = function(enabled) {
-	
-	cc.eventManager.setEnabled(enabled);
+	this.isTouchEnabled = enabled;
 	
 	var btnPause = this.getChildByTag(eatfish.scene.GameLayerTag.btnPause);
 	btnPause.setEnabled(enabled);
@@ -256,6 +634,9 @@ eatfish.scene.GameLayer.prototype.onLayerTouchBegan = function(touch, event) {
 };
 
 eatfish.scene.GameLayer.prototype.onLayerTouchMoved = function(touch, event) {
+	
+	if(!event.getCurrentTarget().isTouchEnabled)
+		return;
 	
 	var winSize = cc.director.getWinSize();
 	
@@ -326,14 +707,19 @@ eatfish.scene.GameLayer.prototype.enemyFishEmergence = function(enemyFishNode) {
 	enemyFishNode.moveStartPoint = startPoint;
 	enemyFishNode.moveEndPoint = endPoint;
 
-	enemyFishNode.runAction(cc.Sequence.create(cc.MoveTo.create(moveTime, endPoint), cc.CallFunc.create(this.enemyFishMoveEnd, this, enemyFishNode)));
+	enemyFishNode.runAction(cc.Sequence.create(
+			cc.MoveTo.create(moveTime, endPoint), 
+			cc.CallFunc.create(function() {
+				enemyFishNode.removeFromParent(true);
+			}, this)
+	));
 
 };
 
 eatfish.scene.GameLayer.prototype.enemyFishRandomLeftPoint = function(enemyFishNode) {
 	var winSize = cc.director.getWinSize();
 	var x = -enemyFishNode.getContentSize().width / 2;
-	var minY = enemyFishNode.centerRect().size.height / 2;
+	var minY = enemyFishNode.centerRect().height / 2;
 	var maxY = winSize.height - minY;
 
 	var val = maxY - minY;
@@ -344,7 +730,7 @@ eatfish.scene.GameLayer.prototype.enemyFishRandomLeftPoint = function(enemyFishN
 eatfish.scene.GameLayer.prototype.enemyFishRandomRightPoint = function(enemyFishNode) {
 	var winSize = cc.director.getWinSize();
 	var x = winSize.width + (enemyFishNode.getContentSize().width / 2);
-	var minY = enemyFishNode.centerRect().size.height / 2;
+	var minY = enemyFishNode.centerRect().height / 2;
 	var maxY = winSize.height - minY;
 
 	var val = maxY - minY;
