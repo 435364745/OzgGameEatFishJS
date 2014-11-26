@@ -1,6 +1,7 @@
 
 //属性
 //type
+//elementName
 
 eatfish.element.EnemyFishType = {
 	fish1: 1,
@@ -23,26 +24,38 @@ eatfish.element.EnemyFishNode = eatfish.element.BaseEnemyFishNode.extend({
 		case eatfish.element.EnemyFishType.fish2:
 			this.animSpriteList = eatfish.element.fishData.fish2;
 			this.animKey = cfg.animKeyEnemyFish2;
+			this.elementName = eatfish.element.Name.enemtyFish2;
+			
 			break;
 		case eatfish.element.EnemyFishType.fish3:
 			this.animSpriteList = eatfish.element.fishData.fish3;
 			this.animKey = cfg.animKeyEnemyFish3;
+			this.elementName = eatfish.element.Name.enemtyFish3;
+			
 			break;
 		case eatfish.element.EnemyFishType.fish4:
 			this.animSpriteList = eatfish.element.fishData.fish4;
 			this.animKey = cfg.animKeyEnemyFish4;
+			this.elementName = eatfish.element.Name.enemtyFish4;
+			
 			break;
 		case eatfish.element.EnemyFishType.fish5:
 			this.animSpriteList = eatfish.element.fishData.fish5;
 			this.animKey = cfg.animKeyEnemyFish5;
+			this.elementName = eatfish.element.Name.enemtyFish5;
+			
 			break;
 		case eatfish.element.EnemyFishType.fish6:
 			this.animSpriteList = eatfish.element.fishData.fish6;
 			this.animKey = cfg.animKeyEnemyFish6;
+			this.elementName = eatfish.element.Name.enemtyFish6;
+			
 			break;
 		default:
 			this.animSpriteList = eatfish.element.fishData.fish1;
 			this.animKey = cfg.animKeyEnemyFish1;
+			this.elementName = eatfish.element.Name.enemtyFish1;
+			
 			break;
 		}
 		

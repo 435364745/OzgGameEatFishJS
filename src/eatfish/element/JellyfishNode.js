@@ -1,8 +1,12 @@
 
+//elementName
+
 eatfish.element.JellyfishNode = eatfish.element.BaseEnemyFishNode.extend({
 	sprite:null,
 	ctor:function () {		
 		this._super();
+		
+		this.elementName = eatfish.element.Name.jellyFish;
 		
 		this.animSpriteList = eatfish.element.fishData.jellyFish;
 		this.animKey = cfg.animKeyJellyFish;

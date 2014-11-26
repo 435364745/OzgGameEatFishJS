@@ -2,6 +2,7 @@
 //属性
 //status
 //isInvincible
+//elementName
 
 eatfish.element.PlayerNodeStatus = {	
 	small: 1,
@@ -18,7 +19,9 @@ eatfish.element.PlayerNode = eatfish.element.BaseFishNode.extend({
 	sprite:null,
 	ctor:function () {		
 		this._super();
-
+		
+		this.elementName = eatfish.element.Name.player;
+		
 		this.status = eatfish.element.PlayerNodeStatus.small;
 		this.isInvincible = false;
 		this.animSpriteList = eatfish.element.fishData.playerFish;

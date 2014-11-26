@@ -16,6 +16,17 @@ eatfish.element.BaseFishNodeOrientation = {
 	right: 2
 };
 
+eatfish.element.Name = {
+	player: 1,
+	jellyFish: 2,
+	enemtyFish1: 3,
+	enemtyFish2: 4,
+	enemtyFish3: 5,
+	enemtyFish4: 6,
+	enemtyFish5: 7,
+	enemtyFish6: 8	
+};
+
 eatfish.element.BaseFishNode = cc.Node.extend({
 	sprite:null,
 	ctor:function () {		
