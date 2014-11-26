@@ -411,15 +411,15 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 		case eatfish.scene.GameLayerTag.btnSound:
 		{
 			//背景音乐
-			if(!sys.localStorage.getItem(cfg.bgSound)) {
+			if(!sys.localStorage.getItem(cfg.bgSound) || sys.localStorage.getItem(cfg.bgSound) == "no") {				
 				cc.audioEngine.setMusicVolume(1.0);				
-				sys.localStorage.setItem(cfg.bgSound, true);
+				sys.localStorage.setItem(cfg.bgSound, "yes");
 				sender.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
 				
 			}
-			else {
+			else {				
 				cc.audioEngine.setMusicVolume(0.0);
-				sys.localStorage.setItem(cfg.bgSound, false);
+				sys.localStorage.setItem(cfg.bgSound, "no");
 				sender.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
 				
 			}
@@ -429,15 +429,15 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 		case eatfish.scene.GameLayerTag.btnEffect:
 		{
 			//效果声音
-			if(!sys.localStorage.getItem(cfg.effectSound)) {
+			if(!sys.localStorage.getItem(cfg.effectSound) || sys.localStorage.getItem(cfg.effectSound) == "no") {
 				cc.audioEngine.setEffectsVolume(1.0);
-				sys.localStorage.setItem(cfg.effectSound, true);
+				sys.localStorage.setItem(cfg.effectSound, "yes");
 				sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
 				
 			}
 			else {
 				cc.audioEngine.setEffectsVolume(0.0);
-				sys.localStorage.setItem(cfg.effectSound, false);				
+				sys.localStorage.setItem(cfg.effectSound, "no");				
 				sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
 				
 			}

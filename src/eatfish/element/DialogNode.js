@@ -15,12 +15,16 @@ eatfish.element.DialogNode = cc.Node.extend({
 	ctor:function (title, content, btn1Text, btn1Callback, btn2Text, btn2Callback) {		
 		this._super();
 		
-		if(btn1Callback)
+		if(btn1Callback) {
 			this.btn1Callback = btn1Callback;
+			this.btn1Callback.retain();
+		}
 		else
 			this.btn1Callback = null;
-		if(btn2Callback)
+		if(btn2Callback) {
 			this.btn2Callback = btn2Callback;
+			this.btn2Callback.retain();
+		}
 		else
 			this.btn2Callback = null;
 		
@@ -33,7 +37,7 @@ eatfish.element.DialogNode = cc.Node.extend({
 		bgSprite.setPosition(this.getContentSize().width / 2, this.getContentSize().height / 2);
 		
 		var labTitle = new ccui.TextField();
-		labTitle.setString(text);
+		labTitle.setString(title);
 		labTitle.setFontName(cfg.globalFontName01);
 		labTitle.setFontSize(32);
 		labTitle.setPosition(this.getContentSize().width / 2, 170);

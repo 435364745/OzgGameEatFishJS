@@ -53,12 +53,12 @@ cc.game.onStart = function(){
     cc.view.resizeWithBrowserSize(true);
     
     //声音的处理
-    if(sys.localStorage.getItem(cfg.bgSound))
+    if(!sys.localStorage.getItem(cfg.bgSound) || sys.localStorage.getItem(cfg.bgSound) == "yes")
     	cc.audioEngine.setMusicVolume(1.0);
     else
     	cc.audioEngine.setMusicVolume(0.0);
     
-    if(sys.localStorage.getItem(cfg.effectSound))
+    if(!sys.localStorage.getItem(cfg.effectSound) || sys.localStorage.getItem(cfg.effectSound) == "yes")
     	cc.audioEngine.setEffectsVolume(1.0);
     else
     	cc.audioEngine.setEffectsVolume(0.0);
