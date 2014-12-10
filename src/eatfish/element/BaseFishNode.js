@@ -67,7 +67,7 @@ eatfish.element.BaseFishNode.prototype.cump = function() {
 	var chumSprite = this.getChildByTag(eatfish.element.BaseFishNodeTag.cump);
 	if(chumSprite) {
 		chumSprite.stopAllActions();
-		chumSprite.removeFromParentAndCleanup(true);
+		chumSprite.removeFromParent(true);
 	}
 	
 	//随机的cump精灵

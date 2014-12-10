@@ -175,14 +175,14 @@ eatfish.element.PlayerNode.prototype.cump = function(enemyFishType) {
 		cc.audioEngine.playEffect(res.audios_eatfish1_mp3);
 	
 	var scoreEffect = new ccui.TextField();
-	switch(type) {
-	case eatfish.element.EnemyFishNode.EnemyFishType.fish2:
+	switch(enemyFishType) {
+	case eatfish.element.Name.enemtyFish2:
 		scoreEffect.setString("+" + cfg.scoreFish2);
 	break;
-	case eatfish.element.EnemyFishNode.EnemyFishType.fish3:
+	case eatfish.element.Name.enemtyFish3:
 		scoreEffect.setString("+" + cfg.scoreFish3);
 	break;
-	case eatfish.element.EnemyFishNode.EnemyFishType.fish4:
+	case eatfish.element.Name.enemtyFish4:
 		scoreEffect.setString("+" + cfg.scoreFish4);
 	break;
 	default:

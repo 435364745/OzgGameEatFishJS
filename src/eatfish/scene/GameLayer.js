@@ -42,9 +42,14 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 	ctor:function () {		
 		this._super();
 		
-		this.stageNum = 0;
 		this.score = 0;
+		this.stageNum = 1;
 		this.playerLife = cfg.player;
+		this.eatFish = 0;
+		this.eatFishTotal = 0;
+		this.eatFishTotalType1And2 = 0;
+		this.eatFishTotalType3 = 0;
+		this.eatFishTotalType4 = 0;
 		
 		this.isTouchEnabled = false;
 		
@@ -246,7 +251,7 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 			var targetObj = nodeList[j];
 			var targetCenter = targetObj.centerRect();
 
-			if (cc.rectContainsRect(srcCenter, targetCenter)) {
+			if (cc.rectIntersectsRect(srcCenter, targetCenter)) {
 				if ((srcObj.elementName >= eatfish.element.Name.enemtyFish1 && srcObj.elementName <= eatfish.element.Name.enemtyFish6) && (targetObj.elementName >= eatfish.element.Name.enemtyFish1 && targetObj.elementName <= eatfish.element.Name.enemtyFish6)) {
 					//Enemy鱼跟Enemy鱼的处理
 					//大鱼吃小鱼
