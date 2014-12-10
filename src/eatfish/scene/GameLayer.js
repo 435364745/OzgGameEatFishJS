@@ -661,7 +661,7 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 			}
 			else {				
 				cc.audioEngine.setMusicVolume(0.0);
-				sys.localStorage.setItem(cfg.bgSound, "no");
+				cc.sys.localStorage.setItem(cfg.bgSound, "no");
 				sender.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
 				
 			}
