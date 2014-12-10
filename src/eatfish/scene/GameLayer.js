@@ -551,7 +551,7 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		btnSound.setTitleFontSize(22.0);		
 		pauseNode.addChild(btnSound);
 		
-		if(sys.localStorage.getItem(cfg.bgSound))
+		if(cc.sys.localStorage.getItem(cfg.bgSound))
 			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
 		else
 			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
@@ -568,7 +568,7 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		btnEffect.setTitleFontSize(22.0);		
 		pauseNode.addChild(btnEffect);
 
-		if(sys.localStorage.getItem(cfg.effectSound))
+		if(cc.sys.localStorage.getItem(cfg.effectSound))
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
 		else
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
@@ -653,9 +653,9 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 		case eatfish.scene.GameLayerTag.btnSound:
 		{
 			//背景音乐
-			if(!sys.localStorage.getItem(cfg.bgSound) || sys.localStorage.getItem(cfg.bgSound) == "no") {				
+			if(!cc.sys.localStorage.getItem(cfg.bgSound) || cc.sys.localStorage.getItem(cfg.bgSound) == "no") {				
 				cc.audioEngine.setMusicVolume(1.0);				
-				sys.localStorage.setItem(cfg.bgSound, "yes");
+				cc.sys.localStorage.setItem(cfg.bgSound, "yes");
 				sender.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
 				
 			}
@@ -671,15 +671,15 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 		case eatfish.scene.GameLayerTag.btnEffect:
 		{
 			//效果声音
-			if(!sys.localStorage.getItem(cfg.effectSound) || sys.localStorage.getItem(cfg.effectSound) == "no") {
+			if(!cc.sys.localStorage.getItem(cfg.effectSound) || cc.sys.localStorage.getItem(cfg.effectSound) == "no") {
 				cc.audioEngine.setEffectsVolume(1.0);
-				sys.localStorage.setItem(cfg.effectSound, "yes");
+				cc.sys.localStorage.setItem(cfg.effectSound, "yes");
 				sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
 				
 			}
 			else {
 				cc.audioEngine.setEffectsVolume(0.0);
-				sys.localStorage.setItem(cfg.effectSound, "no");				
+				cc.sys.localStorage.setItem(cfg.effectSound, "no");				
 				sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
 				
 			}
