@@ -12,6 +12,7 @@
   "jsList": [
     "src/resource.js",
     "src/ozgjs/Utility.js",
+    "src/ozgjs/HashMap.js",
     "src/eatfish/Strings.js",
     "src/eatfish/GameConfig.js",
     "src/eatfish/element/DialogNode.js",

@@ -46,8 +46,8 @@ var cfg = {
 	//最高关卡
 	maxStage: 99,
 	
-	globalFontName01: "Estrangelo Edessa",
-	globalFontName02: "Estrangelo Edessa",
+	globalFontName01: "Arial",
+	globalFontName02: "Arial",
 	
 	//升级到中等或大的所需分数
 	playerStatusNormal: 145, //这个值必须为STAGE_CLEAR的29%
