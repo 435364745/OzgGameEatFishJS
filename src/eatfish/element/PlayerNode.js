@@ -1,7 +1,6 @@
 
 //属性
 //status
-//isInvincible
 //elementName
 
 eatfish.element.PlayerNodeStatus = {	
@@ -23,14 +22,14 @@ eatfish.element.PlayerNode = eatfish.element.BaseFishNode.extend({
 		this.elementName = eatfish.element.Name.player;
 		
 		this.status = eatfish.element.PlayerNodeStatus.small;
-		this.isInvincible = false;
-		this.animSpriteList = eatfish.element.fishData.playerFish;
+		this.animSpriteList = eatfish.element.animData.playerFish;
+		this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.normal;
 		this.isMoving = false;
 		
 		var fish = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame(this.animSpriteList[0]));
 		fish.setAnchorPoint(0, 0);
 		fish.setPosition(0, 0);
-		fish.setTag(eatfish.element.BaseFishNodeTag.fish);		
+		fish.setTag(eatfish.element.BaseNodeTag.mainObj);		
 		this.addChild(fish);
 		
 		this.setAnchorPoint(0.5, 0.5);
@@ -39,7 +38,7 @@ eatfish.element.PlayerNode = eatfish.element.BaseFishNode.extend({
 		var center = new cc.Node();
 		center.setAnchorPoint(0.5, 0.5);
 		center.setPosition(this.getContentSize().width / 2, 21);
-		center.setTag(eatfish.element.BaseFishNodeTag.centerPoint);
+		center.setTag(eatfish.element.BaseNodeTag.centerPoint);
 		center.setContentSize(cc.size(16, 16));
 		this.addChild(center);
 
@@ -52,36 +51,36 @@ eatfish.element.PlayerNode = eatfish.element.BaseFishNode.extend({
 eatfish.element.PlayerNode.prototype.changeStatus = function(status) {
 	this.status = status;
 	var water = this.getChildByTag(eatfish.element.PlayerNodeTag.water);
-	var center = this.getChildByTag(eatfish.element.BaseFishNodeTag.centerPoint);
+	var center = this.getChildByTag(eatfish.element.BaseNodeTag.centerPoint);
 	//var test = this.getChildByTag(9999);
 	switch(this.status) {
-	case eatfish.element.PlayerNodeStatus.normal:
-		this.animSpriteList = eatfish.element.fishData.playerMFish;
-		this.animKey = cfg.animKeyPlayerMFish;
-		if (water)
-			water.setScale(10.0);
+		case eatfish.element.PlayerNodeStatus.normal:
+			this.animSpriteList = eatfish.element.animData.playerMFish;
+			this.animKey = cfg.animKeyPlayerMFish;
+			if (water)
+				water.setScale(10.0);
 			center.setPosition(56, 40);
 			center.setContentSize(cc.size(56, 56));
 			//test.setPosition(56, 40);
 			//test.setContentSize(cc.size(56, 56));
 			//test.setScale(1.75);
 			break;
-	case eatfish.element.PlayerNodeStatus.big:
-		this.animSpriteList = eatfish.element.fishData.playerBFish;
-		this.animKey = cfg.animKeyPlayerBFish;
-		if (water)
-			water.setScale(15.0);
+		case eatfish.element.PlayerNodeStatus.big:
+			this.animSpriteList = eatfish.element.animData.playerBFish;
+			this.animKey = cfg.animKeyPlayerBFish;
+			if (water)
+				water.setScale(15.0);
 			center.setPosition(120, 96);
 			center.setContentSize(cc.size(96, 96));
 			//test.setPosition(120, 96);
 			//test.setContentSize(cc.size(96, 96));
 			//test.setScale(3);
 			break;
-	default:
-		this.animSpriteList = eatfish.element.fishData.playerFish;
-		this.animKey = cfg.animKeyPlayerFish;
-		if (water)
-			water.setScale(5.0);
+		default:
+			this.animSpriteList = eatfish.element.animData.playerFish;
+			this.animKey = cfg.animKeyPlayerFish;
+			if (water)
+				water.setScale(5.0);
 			center.setPosition(28, 21);
 			center.setContentSize(cc.size(16, 16));
 			//test.setPosition(28, 21);
@@ -94,7 +93,7 @@ eatfish.element.PlayerNode.prototype.changeStatus = function(status) {
 };
 
 eatfish.element.PlayerNode.prototype.invincible = function() {
-	this.isInvincible = true;
+	this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.invincible;
 	//水泡
 	var water = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("water1.png"));
 	water.setPosition(this.getContentSize().width / 2, this.getContentSize().height / 2);
@@ -106,14 +105,15 @@ eatfish.element.PlayerNode.prototype.invincible = function() {
 };
 
 eatfish.element.PlayerNode.prototype.invincibleCallback = function() {
-	this.isInvincible = false;
+	this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.normal;
+	
 	var water = this.getChildByTag(eatfish.element.PlayerNodeTag.water);
 	if(water)
 		water.removeFromParent(true);
 };
 
 eatfish.element.PlayerNode.prototype.invincible2 = function() {
-	this.isInvincible = true;
+	this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.invincible;
 	
 	//水泡
 	var water = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("water1.png"));
@@ -141,7 +141,8 @@ eatfish.element.PlayerNode.prototype.invincible2Callback1 = function(delay) {
 };
 
 eatfish.element.PlayerNode.prototype.invincible2Callback2 = function(delay) {
-	this.isInvincible = false;
+	this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.normal;
+	
 	var water = this.getChildByTag(eatfish.element.PlayerNodeTag.water);
 	if(water)
 		water.removeFromParent(true);
@@ -169,30 +170,53 @@ eatfish.element.PlayerNode.prototype.resume = function() {
 };
 
 eatfish.element.PlayerNode.prototype.cump = function(enemyFishType) {
-	if(Math.random() <= 0.2)
-		cc.audioEngine.playEffect(res.audios_eatfish2_mp3);
-	else
-		cc.audioEngine.playEffect(res.audios_eatfish1_mp3);
 	
+	if(enemyFishType < 100) {
+		//吃了鱼
+		if(Math.random() <= 0.2)
+			cc.audioEngine.playEffect(res.audios_eatfish2_mp3);
+		else
+			cc.audioEngine.playEffect(res.audios_eatfish1_mp3);
+	}
+	else {
+		//吃了道具
+		cc.audioEngine.playEffect(res.audios_eatgold_mp3);
+	}
+		
 	var scoreEffect = new ccui.TextField();
 	switch(enemyFishType) {
-	case eatfish.element.Name.enemtyFish2:
-		scoreEffect.setString("+" + cfg.scoreFish2);
-	break;
-	case eatfish.element.Name.enemtyFish3:
-		scoreEffect.setString("+" + cfg.scoreFish3);
-	break;
-	case eatfish.element.Name.enemtyFish4:
-		scoreEffect.setString("+" + cfg.scoreFish4);
-	break;
-	default:
-		scoreEffect.setString("+" + cfg.scoreFish1);
-	break;
+		case eatfish.element.EnemyFishType.fish2:
+			scoreEffect.setString("+" + cfg.scoreFish2);
+			break;
+		case eatfish.element.EnemyFishType.fish3:
+			scoreEffect.setString("+" + cfg.scoreFish3);
+			break;
+		case eatfish.element.EnemyFishType.fish4:
+			scoreEffect.setString("+" + cfg.scoreFish4);
+			break;
+
+		//道具部分
+		case eatfish.element.ItemNodeType.gold:
+			scoreEffect.setString("+" + cfg.scoreItemGold);
+			break;
+			
+		default:
+			scoreEffect.setString("+" + cfg.scoreFish1);
+			break;
 	}
 	
 	scoreEffect.setFontSize(24);
 	scoreEffect.setFontName(cfg.globalFontName01);
-	scoreEffect.setTextColor(cc.color(255, 255, 0, 255));
+
+	if(enemyFishType < 100) {
+		//吃了鱼
+		scoreEffect.setTextColor(cc.color(255, 255, 0, 255));
+	}
+	else {
+		//吃了道具
+		scoreEffect.setTextColor(cc.color(50, 220, 50, 255));
+	}		
+	
 	scoreEffect.setPosition(this.getContentSize().width / 2, this.getContentSize().height);
 	this.addChild(scoreEffect);
 	scoreEffect.runAction(cc.Sequence.create(cc.MoveBy.create(1.0, cc.p(0, 20)), cc.CallFunc.create(this.scoreEffectMoveEnd, this, scoreEffect)));

@@ -30,7 +30,8 @@ var res = {
 	pause_up_png : "res/pause_up.png",
 	progressk_png : "res/progressk.png",
 	scene_start_title_png : "res/scene_start_title.png",
-	test_32_png : "res/test-32.png"
+	test_32_png : "res/test-32.png",
+	Default_png : "res/Default.png"
 };
 
 var g_resources = [];

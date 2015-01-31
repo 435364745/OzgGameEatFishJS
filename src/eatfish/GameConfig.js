@@ -23,8 +23,9 @@ var cfg = {
 	animKeyEnemyFish5: "AnimKeyEnemyFish5",
 	animKeyEnemyFish6: "AnimKeyEnemyFish6",
 	animKeyJellyFish: "AnimKeyJellyFish",
+	animKeyItemGold: "AnimKeyItemGold",
 	
-	enemyJellyFish: 0.0005, //水母每帧的出现机率 1/2000的机率
+	enemyJellyFish: 0.0005, //水母每帧的出现机率
 	
 	//各个AI鱼的出现机率
 	enemyFish1: 0.05,
@@ -34,28 +35,35 @@ var cfg = {
 	enemyFish5: 0.00125,
 	enemyFish6: 0.00125,
 	
+	//金币的出现机率
+	itemGold: 0.005,
+	
 	//吃了一条鱼所加的分数
 	scoreFish1: 1,
 	scoreFish2: 1,
 	scoreFish3: 2,
 	scoreFish4: 3,
 	
+	//吃了一个金币所加的分数
+	scoreItemGold: 5,
+	
 	//最高分数
-	maxScore: 99999,
+	maxScore: 999999,
 	
 	//最高关卡
 	maxStage: 99,
 	
-	globalFontName01: "Arial",
-	globalFontName02: "Arial",
-	
-	//升级到中等或大的所需分数
-	playerStatusNormal: 145, //这个值必须为STAGE_CLEAR的29%
-	playerStatusBig: 305, //这个值必须为STAGE_CLEAR的61%
+	globalFontName01: "Arial-BoldMT",
+	globalFontName02: "Arial-BoldItalicMT",
 	
 	//吃够多少条鱼过一关
-	stageClear: 500 //小鱼+1，中鱼+2，大鱼+3	
-		
+	stageClear: 40, //小鱼+1，中鱼+2，大鱼+3
+	stageClearStep: 20, //每过一关，增加的吃鱼条件
+	
+	//窗口大小
+	windowWidth: 960.0,
+	windowHeight: 640.0
+	
 };
 
 //定义本游戏的命名空间

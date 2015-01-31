@@ -15,15 +15,18 @@
     "src/ozgjs/HashMap.js",
     "src/eatfish/Strings.js",
     "src/eatfish/GameConfig.js",
+    "src/eatfish/element/AnimData.js",
+    "src/eatfish/element/BaseNode.js",
     "src/eatfish/element/DialogNode.js",
-    "src/eatfish/element/FishData.js",
     "src/eatfish/element/BaseFishNode.js",
     "src/eatfish/element/BaseEnemyFishNode.js",
     "src/eatfish/element/EnemyFishNode.js",
     "src/eatfish/element/JellyfishNode.js",
     "src/eatfish/element/PlayerNode.js",
+    "src/eatfish/element/ItemNode.js",
     "src/eatfish/scene/BaseLayer.js",
     "src/eatfish/scene/GameLayer.js",
-    "src/eatfish/scene/StartLayer.js"
+    "src/eatfish/scene/StartLayer.js",
+    "src/eatfish/scene/InitLayer.js"
   ]
 }

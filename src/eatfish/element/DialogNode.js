@@ -144,28 +144,28 @@ eatfish.element.DialogNode.prototype.showActEnd = function() {
 
 eatfish.element.DialogNode.prototype.onButton = function(sender, eventType) {
 	switch(eventType) {
-	case ccui.Widget.TOUCH_BEGAN:
-		break;
-	case ccui.Widget.TOUCH_MOVED:
-		break;
-	case ccui.Widget.TOUCH_ENDED:
-	{
-		switch(sender.getTag()) {
-		case eatfish.element.DialogNodeTag.btn2:
-		{
-			if (this.btn2Callback)
-				this.runAction(this.btn2Callback);
-				//this.removeFromParent(true);
-		}
-		break;
-		default:
-		{
-			if (this.btn1Callback)
-				this.runAction(this.btn1Callback);
-		}
-		break;
-		}
-	}
-	break;
+		case ccui.Widget.TOUCH_BEGAN:
+			break;
+		case ccui.Widget.TOUCH_MOVED:
+			break;
+		case ccui.Widget.TOUCH_ENDED:
+			{
+				switch(sender.getTag()) {
+					case eatfish.element.DialogNodeTag.btn2:
+						{
+							if (this.btn2Callback)
+								this.runAction(this.btn2Callback);
+								//this.removeFromParent(true);
+						}
+						break;
+					default:
+						{
+							if (this.btn1Callback)
+								this.runAction(this.btn1Callback);
+						}
+						break;
+				}
+			}
+			break;
 	}
 };

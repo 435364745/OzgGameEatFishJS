@@ -4,6 +4,12 @@ OzgGame—大鱼吃小鱼
 
 使用CocosCodeIDE 1.1.0，需要将cocos2d-js的frameworks目录和runtime目录复制到OzgGameEatFishJS下，即OzgGameEatFishJS/frameworks，可用CocosCodeIDE新建一个空项目然后再找到这两个目录。
 
+目前遇到的问题：
+
+win32下运行正常，有部分代码在浏览器运行不了，原因不明。
+
+游戏界面右上角的关卡和分数会自动改变位置，原因不明。
+
 ================
 
 本游戏的cocos2d-iphone版本：https://github.com/ouzhigang/ozggame_eat_fish

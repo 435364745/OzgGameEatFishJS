@@ -1,5 +1,5 @@
 
-eatfish.element.fishData = {
+eatfish.element.animData = {
 		
 	fish1: [
         "Fish1_1.png",
@@ -270,5 +270,16 @@ eatfish.element.fishData = {
         "jellyfish23.png",
         "jellyfish24.png"
 	],
-		              
+	
+	itemGold: [
+       "gold1.png", 
+       "gold2.png", 
+       "gold3.png", 
+       "gold4.png", 
+       "gold5.png", 
+       "gold4.png", 
+       "gold3.png", 
+       "gold2.png"	   
+	]
+	
 };

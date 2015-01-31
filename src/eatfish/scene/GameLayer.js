@@ -10,6 +10,9 @@
 //playerLife
 //bg
 //touchEventObj
+//stageClear //吃够多少条鱼过一关
+//playerStatusNormal //升级到中等鱼的所需条件，这个值必须为m_stageClear的29%
+//playerStatusBig //升级到大鱼的所需条件，这个值必须为m_stageClear的61%
 
 eatfish.scene.GameLayerTag = {
 	bg: 1,
@@ -51,6 +54,10 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		this.eatFishTotalType3 = 0;
 		this.eatFishTotalType4 = 0;
 		
+		this.stageClear = cfg.stageClear;
+		this.playerStatusNormal = parseInt(parseFloat(this.stageClear) * 0.29 + 0.5);
+		this.playerStatusBig = parseInt(parseFloat(this.stageClear) * 0.61 + 0.5);
+		
 		this.isTouchEnabled = false;
 		
 		cc.spriteFrameCache.addSpriteFrames(res.Fishtales_plist);
@@ -61,7 +68,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		
 		//背景
 		var bgList = [ res.bg1_png, res.bg2_png, res.bg3_png ];
-		var i = rangeRandom(0, bgList.length - 1);
+		var i = randomInt(0, bgList.length - 1);
 				
 		var bg = new cc.Sprite(bgList[i]);
 		bg.setPosition(winSize.width / 2, winSize.height / 2);
@@ -179,64 +186,84 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 	var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
 	if(!fishNode)
 		return;
-
+	
+	var offsetVal = this.stageNum * 0.0003;
+	
 	//水母
-	if(Math.random() <= cfg.enemyJellyFish) {
+	if(Math.random() <= cfg.enemyJellyFish + offsetVal) {
 		var enemyFishNode = new eatfish.element.JellyfishNode();
 
 		var minVal = enemyFishNode.getContentSize().width / 2;
 		var maxVal = winSize.width - (enemyFishNode.getContentSize().width / 2);
 
-		var srcX = maxVal - minVal;
-		srcX = minVal + (srcX * Math.random());
+		srcX = randomFloat(minVal, maxVal);
 
-		enemyFishNode.setPosition(Vec2(srcX, -enemyFishNode.getContentSize().height / 2));
+		enemyFishNode.setPosition(cc.p(srcX, -enemyFishNode.getContentSize().height / 2));
 		fishNode.addChild(enemyFishNode);
 
-		var moveTime = 15.0 - 10.0;
-		moveTime = 10.0 + (moveTime * CCRANDOM_0_1());
+		var moveTime = randomFloat(10.0, 15.0);
 
 		enemyFishNode.runAction(cc.Sequence.create(
-				cc.MoveTo.create(moveTime, cc.p(srcX, winSize.height + (enemyFishNode.getContentSize().height / 2))), 
-				cc.CallFunc.create(function() {
-					enemyFishNode.removeFromParent(true);
-				}, this)
+			cc.MoveTo.create(moveTime, cc.p(srcX, winSize.height + (enemyFishNode.getContentSize().height / 2))), 
+			cc.CallFunc.create(function() {
+				enemyFishNode.removeFromParent(true);
+			}, this)
 		));
 
 	}
 
+	//金币
+	if (Math.random() <= cfg.itemGold) {
+		var itemNode = new eatfish.element.ItemNode(eatfish.element.ItemNodeType.gold);
+		
+		var minVal = itemNode.getContentSize().width / 2;
+		var maxVal = winSize.width - (itemNode.getContentSize().width / 2);
+		var srcX = randomFloat(minVal, maxVal);
+		
+		itemNode.setPosition(srcX, winSize.height + (itemNode.getContentSize().height / 2));
+		fishNode.addChild(itemNode);
+		
+		var moveTime = randomFloat(15.0, 20.0);
+		itemNode.runAction(cc.Sequence.create(
+			cc.MoveTo.create(moveTime, cc.p(srcX, -itemNode.getContentSize().height / 2)),
+			cc.CallFunc.create(function() {
+				enemyFishNode.removeFromParent(true);
+			}, this)
+		));
+	}
+
 	//fish1
-	if(Math.random() <= cfg.enemyFish1) {
+	if(Math.random() <= cfg.enemyFish1 + offsetVal) {
 		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish1);
 		this.enemyFishEmergence(enemyFishNode);
 	}
 
 	//fish2
-	if(Math.random() <= cfg.enemyFish2) {
+	if(Math.random() <= cfg.enemyFish2 + offsetVal) {
 		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish2);
 		this.enemyFishEmergence(enemyFishNode);
 	}
 
 	//fish3
-	if(Math.random() <= cfg.enemyFish3) {
+	if(Math.random() <= cfg.enemyFish3 + offsetVal) {
 		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish3);
 		this.enemyFishEmergence(enemyFishNode);
 	}
 
 	//fish4
-	if(Math.random() <= cfg.enemyFish4) {
+	if(Math.random() <= cfg.enemyFish4 + offsetVal) {
 		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish4);
 		this.enemyFishEmergence(enemyFishNode);
 	}
 
 	//fish5
-	if(Math.random() <= cfg.enemyFish5) {
+	if(Math.random() <= cfg.enemyFish5 + offsetVal) {
 		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish5);
 		this.enemyFishEmergence(enemyFishNode);
 	}
 
 	//fish6
-	if(Math.random() <= cfg.enemyFish6) {
+	if(Math.random() <= cfg.enemyFish6 + offsetVal) {
 		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish6);
 		this.enemyFishEmergence(enemyFishNode);
 	}
@@ -271,10 +298,27 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 					
 					if (targetObj.elementName == eatfish.element.Name.jellyFish) {
 						//player与水母碰撞了
-						if (!srcObj.isInvincible) {
+						if (srcObj.effectStatus != eatfish.element.BaseFishNodeEffectStatus.invincible) {
 							cc.audioEngine.playEffect(res.audios_jellyfish_mp3);
 							srcObj.paralysis();
 						}												
+					}
+					else if (targetObj.elementName == eatfish.element.Name.itemGold) {
+						//player与item碰撞了
+						
+						var player = srcObj;
+						
+						switch (targetObj.type) {
+							default:
+								//吃了金币
+								player.cump(targetObj.type);
+								targetObj.removeFromParent(true);
+								
+								//加分
+								this.changeScore(targetObj.type);
+								break;
+						}
+						
 					}
 					else if (targetObj.elementName >= eatfish.element.Name.enemtyFish1 && targetObj.elementName <= eatfish.element.Name.enemtyFish6) {
 						//player与Enemy鱼碰撞了
@@ -283,21 +327,21 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 						
 						if (player.isMoving) {
 							switch (player.status) {
-							case eatfish.element.PlayerNodeStatus.normal:
-								//中的状态
-								if (targetObj.type == eatfish.element.EnemyFishType.fish1 || targetObj.type == eatfish.element.EnemyFishType.fish2 || targetObj.type == eatfish.element.EnemyFishType.fish3)
-									doEat = true;
-							break;
-							case eatfish.element.PlayerNodeStatus.big:
-								//大的状态
-								if (targetObj.type == eatfish.element.EnemyFishType.fish1 || targetObj.type == eatfish.element.EnemyFishType.fish2 || targetObj.type == eatfish.element.EnemyFishType.fish3 || targetObj.type == eatfish.element.EnemyFishType.fish4)
-									doEat = true;
-							break;
-							default:
-								//小的状态
-								if (targetObj.type == eatfish.element.EnemyFishType.fish1 || targetObj.type == eatfish.element.EnemyFishType.fish2)
-									doEat = true;
-							break;
+								case eatfish.element.PlayerNodeStatus.normal:
+									//中的状态
+									if (targetObj.type == eatfish.element.EnemyFishType.fish1 || targetObj.type == eatfish.element.EnemyFishType.fish2 || targetObj.type == eatfish.element.EnemyFishType.fish3)
+										doEat = true;
+									break;
+								case eatfish.element.PlayerNodeStatus.big:
+									//大的状态
+									if (targetObj.type == eatfish.element.EnemyFishType.fish1 || targetObj.type == eatfish.element.EnemyFishType.fish2 || targetObj.type == eatfish.element.EnemyFishType.fish3 || targetObj.type == eatfish.element.EnemyFishType.fish4)
+										doEat = true;
+									break;
+								default:
+									//小的状态
+									if (targetObj.type == eatfish.element.EnemyFishType.fish1 || targetObj.type == eatfish.element.EnemyFishType.fish2)
+										doEat = true;
+									break;
 							}
 						}
 						
@@ -310,7 +354,7 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 							this.changeScore(targetObj.type);
 							
 							//关卡进度条
-							var cpProgress = parseFloat(this.eatFishTotal) / parseFloat(cfg.stageClear);
+							var cpProgress = parseFloat(this.eatFishTotal) / parseFloat(this.stageClear);
 							var progress = this.getChildByTag(eatfish.scene.GameLayerTag.progress);
 							progress.setPercentage(cpProgress * 100.0);
 							
@@ -318,7 +362,7 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 								//过关
 								this.unscheduleUpdate();
 								
-								cc.audioEngine.playEffect(cfg.audios_complete_mp3);
+								cc.audioEngine.playEffect(res.audios_complete_mp3);
 								
 								this.enabledTouchEvent(false);
 								fishNode.removeAllChildren(true);
@@ -398,15 +442,15 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 								btnNext.setTitleFontSize(22.0);
 								btnNext.setTitleText(strings.clearNext);
 								clearNode.addChild(btnNext);
-																						
+								
 							}
 							
 							//变大的判断
-							if (player.status == eatfish.element.PlayerNodeStatus.normal && this.eatFish >= cfg.playerStatusBig) {
+							if (player.status == eatfish.element.PlayerNodeStatus.normal && this.eatFish >= this.playerStatusBig) {
 								cc.audioEngine.playEffect(res.audios_growth_mp3);
 								player.changeStatus(eatfish.element.PlayerNodeStatus.big);
 							}
-							else if (player.status == eatfish.element.PlayerNodeStatus.small && this.eatFish >= cfg.playerStatusNormal) {
+							else if (player.status == eatfish.element.PlayerNodeStatus.small && this.eatFish >= this.playerStatusNormal) {
 								cc.audioEngine.playEffect(res.audios_growth_mp3);
 								player.changeStatus(eatfish.element.PlayerNodeStatus.normal);
 							}
@@ -414,7 +458,7 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 						else {
 							//如果在可控制状态下，不是无敌状态的话，就会被比自己大的鱼吃了
 							
-							if (player.isMoving && !player.isInvincible) {
+							if (player.isMoving && player.effectStatus != eatfish.element.BaseFishNodeEffectStatus.invincible) {
 								targetObj.cump();
 								player.removeFromParent(true);
 								this.enabledTouchEvent(false);
@@ -602,213 +646,220 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 	
 	switch(eventType) {
-	case ccui.Widget.TOUCH_BEGAN:
-
-		break;
-	case ccui.Widget.TOUCH_MOVED:
-
-		break;
-	case ccui.Widget.TOUCH_ENDED:
-		switch(sender.getTag()) {
-		case eatfish.scene.GameLayerTag.btnPause:
-		{
-			//暂停游戏
-			cc.audioEngine.playEffect(res.audios_btn_wav);
-
-			this.scenePause();                    
-		}
+		case ccui.Widget.TOUCH_BEGAN:
+	
 			break;
-		case eatfish.scene.GameLayerTag.btnResume:
-		{
-			//继续游戏
-
-			cc.audioEngine.playEffect(res.audios_btn_wav);
-
-			var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
-			if(fishNode) {
-				var nodeList = fishNode.getChildren();
-				
-				for(var i = 0; i < nodeList.length; i++) {
-					
-					var fishChildren = nodeList[i].getChildren();
-					
-					for(var j = 0; j < fishChildren.length; j++) {
-						fishChildren[j].resume();
+		case ccui.Widget.TOUCH_MOVED:
+	
+			break;
+		case ccui.Widget.TOUCH_ENDED:
+			switch(sender.getTag()) {
+				case eatfish.scene.GameLayerTag.btnPause:
+					{
+						//暂停游戏
+						cc.audioEngine.playEffect(res.audios_btn_wav);
+			
+						this.scenePause();                    
 					}
-					
-					nodeList[i].resume();
-				}
-
-			}
-
-			this.scheduleUpdate();
-			this.enabledTouchEvent(true);
-
-			var pauseNode = this.getChildByTag(eatfish.scene.GameLayerTag.pauseNode);
-			if(pauseNode)
-				pauseNode.removeFromParent(true);
-
-		}
-			break;
-		case eatfish.scene.GameLayerTag.btnSound:
-		{
-			//背景音乐
-			if(!cc.sys.localStorage.getItem(cfg.bgSound) || cc.sys.localStorage.getItem(cfg.bgSound) == "no") {				
-				cc.audioEngine.setMusicVolume(1.0);				
-				cc.sys.localStorage.setItem(cfg.bgSound, "yes");
-				sender.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
-				
-			}
-			else {				
-				cc.audioEngine.setMusicVolume(0.0);
-				cc.sys.localStorage.setItem(cfg.bgSound, "no");
-				sender.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
-				
-			}
-
-		}
-			break;	
-		case eatfish.scene.GameLayerTag.btnEffect:
-		{
-			//效果声音
-			if(!cc.sys.localStorage.getItem(cfg.effectSound) || cc.sys.localStorage.getItem(cfg.effectSound) == "no") {
-				cc.audioEngine.setEffectsVolume(1.0);
-				cc.sys.localStorage.setItem(cfg.effectSound, "yes");
-				sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
-				
-			}
-			else {
-				cc.audioEngine.setEffectsVolume(0.0);
-				cc.sys.localStorage.setItem(cfg.effectSound, "no");				
-				sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
-				
-			}
-
-		}
-			break;
-		case eatfish.scene.GameLayerTag.btnExit:
-		{			
-			//退出游戏
-			var maskLayer = new cc.LayerColor(cc.color(0, 0, 0, 180), cc.director.getWinSize().width, cc.director.getWinSize().height);
-			maskLayer.setTag(eatfish.scene.GameLayerTag.mask);
-			maskLayer.setPosition(cc.p(0, 0));
-			this.addChild(maskLayer);
-
-			var pauseNode = this.getChildByTag(eatfish.scene.GameLayerTag.pauseNode);
-			var clearNode = this.getChildByTag(eatfish.scene.GameLayerTag.clearNode);
-			var gameoverNode = this.getChildByTag(eatfish.scene.GameLayerTag.gameoverNode);
-
-			if(pauseNode) {
-				var btnResume = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnResume);
-				btnResume.setEnabled(false);
-
-				var btnSound = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnSound);
-				btnSound.setEnabled(false);
-
-				var btnEffect = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnEffect);
-				btnEffect.setEnabled(false);
-
-				var btnExit = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
-				btnExit.setEnabled(false);
-			}
-
-			if(clearNode) {
-				var btnExit = clearNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
-				btnExit.setEnabled(false);
-
-				var btnNext = clearNode.getChildByTag(eatfish.scene.GameLayerTag.btnNext);
-				btnNext.setEnabled(false);
-			}
-
-			if(gameoverNode) {
-				var btnExit = gameoverNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
-				btnExit.setEnabled(false);
-
-				var btnRestart = gameoverNode.getChildByTag(eatfish.scene.GameLayerTag.btnRestart);
-				btnRestart.setEnabled(false);
-			}
-
-			var dialog = new eatfish.element.DialogNode(strings.title, strings.settingsExitDialog, strings.dialogBtnNo, cc.CallFunc.create(this.onDialogBtnNo, this), strings.dialogBtnYes, cc.CallFunc.create(this.onDialogBtnYes, this));
-			dialog.setPosition(this.getContentSize().width / 2, this.getContentSize().height / 2);
-			this.addChild(dialog);
-		}
-			break;
-		case eatfish.scene.GameLayerTag.btnNext:
-		{
-			//下一关
-
-			this.stageNum += 1;
-			if(this.stageNum > cfg.maxStage)
-				this.stageNum = cfg.maxStage;
-
-			var stageNumLab = this.getChildByTag(eatfish.scene.GameLayerTag.labStageNum);
-			stageNumLab.setString(strings.gameSceneLabStageNum + this.stageNum.toString());
-
-			this.eatFish = 0;
-			this.eatFishTotal = 0;
-			this.eatFishTotalType1And2 = 0;
-			this.eatFishTotalType3 = 0;
-			this.eatFishTotalType4 = 0;
-
-			var progress = this.getChildByTag(eatfish.scene.GameLayerTag.progress);
-			progress.setPercentage(0);
-
-			var clearNode = this.getChildByTag(eatfish.scene.GameLayerTag.clearNode);
-			clearNode.removeFromParent(true);
+					break;
+				case eatfish.scene.GameLayerTag.btnResume:
+					{
+						//继续游戏
 			
-			var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
-			var player = new eatfish.element.PlayerNode();
-			player.setPosition(cc.director.getWinSize().width / 2, 800);
-			player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
-			fishNode.addChild(player, 99999);
-			player.invincible();
+						cc.audioEngine.playEffect(res.audios_btn_wav);
 			
-			this.gameStart(cfg.transition);
-		}
-			break;
-		case eatfish.scene.GameLayerTag.btnRestart:
-		{
-			//重新开始
-
-			this.score = 0;
-			this.stageNum = 1;
-			this.playerLife = cfg.player;
-			this.eatFish = 0;
-			this.eatFishTotal = 0;
-			this.eatFishTotalType1And2 = 0;
-			this.eatFishTotalType3 = 0;
-			this.eatFishTotalType4 = 0;
-
-			var stageNumLab = this.getChildByTag(eatfish.scene.GameLayerTag.labStageNum);
-			stageNumLab.setString(strings.gameSceneLabStageNum + this.stageNum.toString());
-
-			var scoreLab = this.getChildByTag(eatfish.scene.GameLayerTag.labScore);
-			scoreLab.setString(strings.gameSceneLabScore + this.score.toString());
-
-			var fishLifeLab = this.getChildByTag(eatfish.scene.GameLayerTag.labFishLife);
-			fishLifeLab.setString(this.playerLife.toString());
-
-			var progress = this.getChildByTag(eatfish.scene.GameLayerTag.progress);
-			progress.setPercentage(0);
-
-			var gameoverNode = this.getChildByTag(eatfish.scene.GameLayerTag.gameoverNode);
-			gameoverNode.removeFromParent(true);
+						var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+						if(fishNode) {
+							var nodeList = fishNode.getChildren();
+							
+							for(var i = 0; i < nodeList.length; i++) {
+								
+								var fishChildren = nodeList[i].getChildren();
+								
+								for(var j = 0; j < fishChildren.length; j++) {
+									fishChildren[j].resume();
+								}
+								
+								nodeList[i].resume();
+							}
 			
-			var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
-			var player = new eatfish.element.PlayerNode();
-			player.setPosition(cc.director.getWinSize().width / 2, 800);
-			player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
-			fishNode.addChild(player, 99999);
-			player.invincible();
-
-			this.gameStart(cfg.transition);
-		}
+						}
+			
+						this.scheduleUpdate();
+						this.enabledTouchEvent(true);
+			
+						var pauseNode = this.getChildByTag(eatfish.scene.GameLayerTag.pauseNode);
+						if(pauseNode)
+							pauseNode.removeFromParent(true);
+			
+					}
+					break;
+				case eatfish.scene.GameLayerTag.btnSound:
+					{
+						//背景音乐
+						if(!cc.sys.localStorage.getItem(cfg.bgSound) || cc.sys.localStorage.getItem(cfg.bgSound) == "no") {				
+							cc.audioEngine.setMusicVolume(1.0);				
+							cc.sys.localStorage.setItem(cfg.bgSound, "yes");
+							sender.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
+							
+						}
+						else {				
+							cc.audioEngine.setMusicVolume(0.0);
+							cc.sys.localStorage.setItem(cfg.bgSound, "no");
+							sender.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
+							
+						}
+			
+					}
+					break;	
+				case eatfish.scene.GameLayerTag.btnEffect:
+					{
+						//效果声音
+						if(!cc.sys.localStorage.getItem(cfg.effectSound) || cc.sys.localStorage.getItem(cfg.effectSound) == "no") {
+							cc.audioEngine.setEffectsVolume(1.0);
+							cc.sys.localStorage.setItem(cfg.effectSound, "yes");
+							sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
+							
+						}
+						else {
+							cc.audioEngine.setEffectsVolume(0.0);
+							cc.sys.localStorage.setItem(cfg.effectSound, "no");				
+							sender.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
+							
+						}
+			
+					}
+					break;
+				case eatfish.scene.GameLayerTag.btnExit:
+					{			
+						//退出游戏
+						var maskLayer = new cc.LayerColor(cc.color(0, 0, 0, 180), cc.director.getWinSize().width, cc.director.getWinSize().height);
+						maskLayer.setTag(eatfish.scene.GameLayerTag.mask);
+						maskLayer.setPosition(cc.p(0, 0));
+						this.addChild(maskLayer);
+			
+						var pauseNode = this.getChildByTag(eatfish.scene.GameLayerTag.pauseNode);
+						var clearNode = this.getChildByTag(eatfish.scene.GameLayerTag.clearNode);
+						var gameoverNode = this.getChildByTag(eatfish.scene.GameLayerTag.gameoverNode);
+			
+						if(pauseNode) {
+							var btnResume = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnResume);
+							btnResume.setEnabled(false);
+			
+							var btnSound = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnSound);
+							btnSound.setEnabled(false);
+			
+							var btnEffect = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnEffect);
+							btnEffect.setEnabled(false);
+			
+							var btnExit = pauseNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
+							btnExit.setEnabled(false);
+						}
+			
+						if(clearNode) {
+							var btnExit = clearNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
+							btnExit.setEnabled(false);
+			
+							var btnNext = clearNode.getChildByTag(eatfish.scene.GameLayerTag.btnNext);
+							btnNext.setEnabled(false);
+						}
+			
+						if(gameoverNode) {
+							var btnExit = gameoverNode.getChildByTag(eatfish.scene.GameLayerTag.btnExit);
+							btnExit.setEnabled(false);
+			
+							var btnRestart = gameoverNode.getChildByTag(eatfish.scene.GameLayerTag.btnRestart);
+							btnRestart.setEnabled(false);
+						}
+			
+						var dialog = new eatfish.element.DialogNode(strings.title, strings.settingsExitDialog, strings.dialogBtnNo, cc.CallFunc.create(this.onDialogBtnNo, this), strings.dialogBtnYes, cc.CallFunc.create(this.onDialogBtnYes, this));
+						dialog.setPosition(this.getContentSize().width / 2, this.getContentSize().height / 2);
+						this.addChild(dialog);
+					}
+					break;
+				case eatfish.scene.GameLayerTag.btnNext:
+					{
+						//下一关
+			
+						this.stageNum += 1;
+						if(this.stageNum > cfg.maxStage)
+							this.stageNum = cfg.maxStage;
+			
+						var stageNumLab = this.getChildByTag(eatfish.scene.GameLayerTag.labStageNum);
+						stageNumLab.setString(strings.gameSceneLabStageNum + this.stageNum.toString());
+			
+						this.eatFish = 0;
+						this.eatFishTotal = 0;
+						this.eatFishTotalType1And2 = 0;
+						this.eatFishTotalType3 = 0;
+						this.eatFishTotalType4 = 0;
+						
+						this.stageClear += cfg.stageClearStep;
+						this.playerStatusNormal = parseInt(parseFloat(this.stageClear) * 0.29 + 0.5);
+						this.playerStatusBig = parseInt(parseFloat(this.stageClear) * 0.61 + 0.5);
+						
+						var progress = this.getChildByTag(eatfish.scene.GameLayerTag.progress);
+						progress.setPercentage(0);
+			
+						var clearNode = this.getChildByTag(eatfish.scene.GameLayerTag.clearNode);
+						clearNode.removeFromParent(true);
+						
+						var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+						var player = new eatfish.element.PlayerNode();
+						player.setPosition(cc.director.getWinSize().width / 2, 800);
+						player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
+						fishNode.addChild(player, 99999);
+						player.invincible();
+						
+						this.gameStart(cfg.transition);
+					}
+					break;
+				case eatfish.scene.GameLayerTag.btnRestart:
+					{
+						//重新开始
+			
+						this.score = 0;
+						this.stageNum = 1;
+						this.playerLife = cfg.player;
+						this.eatFish = 0;
+						this.eatFishTotal = 0;
+						this.eatFishTotalType1And2 = 0;
+						this.eatFishTotalType3 = 0;
+						this.eatFishTotalType4 = 0;
+						
+						this.stageClear = cfg.stageClear;
+						this.playerStatusNormal = parseInt(parseFloat(this.stageClear) * 0.29 + 0.5);
+						this.playerStatusBig = parseInt(parseFloat(this.stageClear) * 0.61 + 0.5);
+						
+						var stageNumLab = this.getChildByTag(eatfish.scene.GameLayerTag.labStageNum);
+						stageNumLab.setString(strings.gameSceneLabStageNum + this.stageNum.toString());
+			
+						var scoreLab = this.getChildByTag(eatfish.scene.GameLayerTag.labScore);
+						scoreLab.setString(strings.gameSceneLabScore + this.score.toString());
+			
+						var fishLifeLab = this.getChildByTag(eatfish.scene.GameLayerTag.labFishLife);
+						fishLifeLab.setString(this.playerLife.toString());
+			
+						var progress = this.getChildByTag(eatfish.scene.GameLayerTag.progress);
+						progress.setPercentage(0);
+			
+						var gameoverNode = this.getChildByTag(eatfish.scene.GameLayerTag.gameoverNode);
+						gameoverNode.removeFromParent(true);
+						
+						var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+						var player = new eatfish.element.PlayerNode();
+						player.setPosition(cc.director.getWinSize().width / 2, 800);
+						player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
+						fishNode.addChild(player, 99999);
+						player.invincible();
+			
+						this.gameStart(cfg.transition);
+					}
+					break;
+				default:
+					break;
+			}
 			break;
-		default:
-			break;
-		}
-
-		break;
 	}
 	
 };
@@ -876,7 +927,7 @@ eatfish.scene.GameLayer.prototype.onLayerTouchBegan = function(touch, event) {
 };
 
 eatfish.scene.GameLayer.prototype.onLayerTouchMoved = function(touch, event) {
-	
+
 	if(!event.getCurrentTarget().isTouchEnabled)
 		return;
 	
@@ -886,7 +937,7 @@ eatfish.scene.GameLayer.prototype.onLayerTouchMoved = function(touch, event) {
 	
 	var player = fishNode.getChildByTag(eatfish.scene.GameLayerTag.fishPlayer);
 	
-	if(player && player.isMoving) {
+	if(player && player.isMoving && player.effectStatus != eatfish.element.BaseFishNodeEffectStatus.paralysis) {
 		var beginPoint = touch.getLocation();
 		var endPoint = touch.getPreviousLocation();
 		var offSet = cc.pSub(beginPoint, endPoint);
@@ -941,8 +992,7 @@ eatfish.scene.GameLayer.prototype.enemyFishEmergence = function(enemyFishNode) {
 	enemyFishNode.setPosition(startPoint);
 	fishNode.addChild(enemyFishNode);
 
-	var moveTime = 20.0 - 10.0;
-	moveTime = 10.0 + (moveTime * Math.random());
+	var moveTime = randomFloat(10.0, 20.0);
 
 	enemyFishNode.isMoving = true; //执行action需要强制设置成YES
 	enemyFishNode.moveTime = moveTime;
@@ -964,8 +1014,7 @@ eatfish.scene.GameLayer.prototype.enemyFishRandomLeftPoint = function(enemyFishN
 	var minY = enemyFishNode.centerRect().height / 2;
 	var maxY = winSize.height - minY;
 
-	var val = maxY - minY;
-	var y = minY + (val * Math.random());
+	var y = randomFloat(minY, maxY);
 	return cc.p(x, y);
 };
 
@@ -975,44 +1024,51 @@ eatfish.scene.GameLayer.prototype.enemyFishRandomRightPoint = function(enemyFish
 	var minY = enemyFishNode.centerRect().height / 2;
 	var maxY = winSize.height - minY;
 
-	var val = maxY - minY;
-	var y = minY + (val * Math.random());
+	var y = randomFloat(minY, maxY);
 	return cc.p(x, y);
 };
 
 eatfish.scene.GameLayer.prototype.changeScore = function(type) {
 
 	switch(type) {
-	case eatfish.element.EnemyFishType.fish2:
-		this.score += cfg.scoreFish2;
-		this.eatFish += cfg.scoreFish2;
-		this.eatFishTotal += 1;
-		this.eatFishTotalType1And2 += 1;
+		case eatfish.element.EnemyFishType.fish2:
+			this.score += cfg.scoreFish2;
+			this.eatFish += cfg.scoreFish2;
+			this.eatFishTotal += cfg.scoreFish2;
+			this.eatFishTotalType1And2 += 1;
+			
+			break;
+		case eatfish.element.EnemyFishType.fish3:
+			this.score += cfg.scoreFish3;
+			this.eatFish += cfg.scoreFish3;
+			this.eatFishTotal += cfg.scoreFish3;
+			this.eatFishTotalType3 += 1;
+			
+			break;
+		case eatfish.element.EnemyFishType.fish4:
+			this.score += cfg.scoreFish4;
+			this.eatFish += cfg.scoreFish4;
+			this.eatFishTotal += cfg.scoreFish4;
+			this.eatFishTotalType4 += 1;
+			
+			break;
 		
-		break;
-	case eatfish.element.EnemyFishType.fish3:
-		this.score += cfg.scoreFish3;
-		this.eatFish += cfg.scoreFish3;
-		this.eatFishTotal += 1;
-		this.eatFishTotalType3 += 1;
-		
-		break;
-	case eatfish.element.EnemyFishType.fish4:
-		this.score += cfg.scoreFish4;
-		this.eatFish += cfg.scoreFish4;
-		this.eatFishTotal += 1;
-		this.eatFishTotalType4 += 1;
-		
-		break;
-	default:
-		this.score += cfg.scoreFish1;
-		this.eatFish += cfg.scoreFish1;
-		this.eatFishTotal += 1;
-		this.eatFishTotalType1And2 += 1;
-		
-		break;
+		//道具部分
+		case eatfish.element.ItemNodeType.gold:
+			//金币
+			this.score += cfg.scoreItemGold;
+
+			break;
+			
+		default:
+			this.score += cfg.scoreFish1;
+			this.eatFish += cfg.scoreFish1;
+			this.eatFishTotal += cfg.scoreFish1;
+			this.eatFishTotalType1And2 += 1;
+
+			break;
 	}
-	
+
 	if(this.score > cfg.maxScore)
 		this.score = cfg.maxScore;
 
@@ -1021,7 +1077,9 @@ eatfish.scene.GameLayer.prototype.changeScore = function(type) {
 
 	if(this.eatFishTotal > cfg.maxScore)
 		this.eatFishTotal = cfg.maxScore;
-				
+
+	var scoreLab = this.getChildByTag(eatfish.scene.GameLayerTag.labScore);
+	scoreLab.setString(strings.gameSceneLabScore + this.score.toString());
 };
 
 eatfish.scene.GameLayer.prototype.changePlayerLife = function(playerLife) {

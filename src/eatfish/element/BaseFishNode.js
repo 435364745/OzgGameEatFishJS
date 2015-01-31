@@ -4,10 +4,11 @@
 //animKey
 //orientation
 //isMoving
+//effectStatus
 
 eatfish.element.BaseFishNodeTag = {
-	fish: 1,
-	centerPoint: 2,
+	//mainObj: 1,
+	//centerPoint: 2,
 	cump: 3
 };
 
@@ -16,18 +17,13 @@ eatfish.element.BaseFishNodeOrientation = {
 	right: 2
 };
 
-eatfish.element.Name = {
-	player: 1,
-	jellyFish: 2,
-	enemtyFish1: 3,
-	enemtyFish2: 4,
-	enemtyFish3: 5,
-	enemtyFish4: 6,
-	enemtyFish5: 7,
-	enemtyFish6: 8	
+eatfish.element.BaseFishNodeEffectStatus = {
+	normal: 1, //通常状态
+	invincible: 2, //无敌状态
+	paralysis: 3 //麻痹状态
 };
 
-eatfish.element.BaseFishNode = cc.Node.extend({
+eatfish.element.BaseFishNode = eatfish.element.BaseNode.extend({
 	sprite:null,
 	ctor:function () {		
 		this._super();
@@ -36,31 +32,22 @@ eatfish.element.BaseFishNode = cc.Node.extend({
 		this.animKey = null;
 		this.orientation = eatfish.element.BaseFishNodeOrientation.left;
 		this.isMoving = false;
-				
+		this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.normal;
+		
 		return true;
 	}
 });
 
-eatfish.element.BaseFishNode.prototype.centerRect = function() {
-
-	var center = this.getChildByTag(eatfish.element.BaseFishNodeTag.centerPoint);
-	if(!center)
-		return cc.rect(0, 0, 0, 0);
-	var point = cc.p(center.getBoundingBox().x, center.getBoundingBox().y);
-	point = this.convertToWorldSpace(point);
-	return cc.rect(point.x, point.y, center.getContentSize().width, center.getContentSize().height);	
-};
-
 eatfish.element.BaseFishNode.prototype.orientationLeft = function() {
 	this.orientation = eatfish.element.BaseFishNodeOrientation.left;
-	var fish = this.getChildByTag(eatfish.element.BaseFishNodeTag.fish);
-	fish.setFlippedX(false);
+	var mainObj = this.getChildByTag(eatfish.element.BaseNodeTag.mainObj);
+	mainObj.setFlippedX(false);
 };
 
 eatfish.element.BaseFishNode.prototype.orientationRight = function() {
 	this.orientation = eatfish.element.BaseFishNodeOrientation.right;
-	var fish = this.getChildByTag(eatfish.element.BaseFishNodeTag.fish);
-	fish.setFlippedX(true);
+	var mainObj = this.getChildByTag(eatfish.element.BaseNodeTag.mainObj);
+	mainObj.setFlippedX(true);
 };
 
 eatfish.element.BaseFishNode.prototype.cump = function() {
@@ -72,7 +59,7 @@ eatfish.element.BaseFishNode.prototype.cump = function() {
 	
 	//随机的cump精灵
 	var cumpList = [ "cump1.png", "cump2.png", "cump3.png", "cump4.png", "cump5.png" ];
-	var i = rangeRandom(0, cumpList.length - 1);
+	var i = randomInt(0, cumpList.length - 1);
 
 	chumSprite = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame(cumpList[i]));
 	
@@ -89,71 +76,50 @@ eatfish.element.BaseFishNode.prototype.cump = function() {
 };
 
 eatfish.element.BaseFishNode.prototype.paralysis = function() {
-	if(!this.isMoving)
-		return;
-	this.isMoving = false;
+	if(this.effectStatus == eatfish.element.BaseFishNodeEffectStatus.invincible || this.effectStatus == eatfish.element.BaseFishNodeEffectStatus.paralysis)
+		return;	
+	this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.paralysis;
+	
 	this.stopAllActions();
-	var fish = this.getChildByTag(eatfish.element.BaseFishNodeTag.fish);
-	if(fish)
-		fish.stopAllActions();
+	var mainObj = this.getChildByTag(eatfish.element.BaseNodeTag.mainObj);
+	if(mainObj)
+		mainObj.stopAllActions();
+	
 	var act1 = cc.MoveBy.create(0.01, cc.p(-3, 0));
 	var act2 = cc.MoveBy.create(0.02, cc.p(6, 0));
 	var act3 = act2.reverse();
 	var act4 = cc.MoveBy.create(0.01, cc.p(3, 0));
+	
 	//麻痹5秒后恢复正常
 	this.runAction(cc.Sequence.create(
-			act1, 
-			act2, 
-			act3, 
-			act4, 
-			cc.DelayTime.create(5.0), 
-			cc.CallFunc.create(function() {
-				this.playAnim();
-				this.isMoving = true;
-			}, this)
+		act1, 
+		act2, 
+		act3, 
+		act4, 
+		cc.DelayTime.create(5.0), 
+		cc.CallFunc.create(function() {
+			this.playAnim();
+			this.isMoving = true;
+			this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.normal;
+		}, this)
 	));
 };
 
 eatfish.element.BaseFishNode.prototype.pause = function() {
-	if(this.getChildByTag(eatfish.element.BaseFishNodeTag.fish))
-		this.getChildByTag(eatfish.element.BaseFishNodeTag.fish).pause();
 	if(this.getChildByTag(eatfish.element.BaseFishNodeTag.cump))
 		this.getChildByTag(eatfish.element.BaseFishNodeTag.cump).pause();
 
-	cc.Node.prototype.pause.call(this);
+	eatfish.element.BaseNode.prototype.pause.call(this);
 };
 
 eatfish.element.BaseFishNode.prototype.resume = function() {
-	if(this.getChildByTag(eatfish.element.BaseFishNodeTag.fish))
-		this.getChildByTag(eatfish.element.BaseFishNodeTag.fish).resume();
 	if(this.getChildByTag(eatfish.element.BaseFishNodeTag.cump))
 		this.getChildByTag(eatfish.element.BaseFishNodeTag.cump).resume();
 
-	cc.Node.prototype.resume.call(this);
+	eatfish.element.BaseNode.prototype.resume.call(this);
 };
 
 eatfish.element.BaseFishNode.prototype.cumpAutoHide = function(sender) {
 	sender.stopAllActions();
 	sender.removeFromParent(true);
-};
-
-eatfish.element.BaseFishNode.prototype.playAnim = function() {
-	var anim = cc.animationCache.getAnimation(this.animKey);
-	var fish = this.getChildByTag(eatfish.element.BaseFishNodeTag.fish);
-	if(!anim) {
-		var frames = new Array();
-		
-		for(var i = 0; i < this.animSpriteList.length; i++) {
-			frames.push(cc.spriteFrameCache.getSpriteFrame(this.animSpriteList[i]));
-		}
-		
-		anim = new cc.Animation(frames);
-		anim.setDelayPerUnit(0.1);
-		anim.setRestoreOriginalFrame(false);
-		cc.animationCache.addAnimation(anim, this.animKey);
-		this.setContentSize(frames[0].getOriginalSize());
-	}
-	fish.stopAllActions();
-	var animate = cc.repeatForever(cc.animate(anim));
-	fish.runAction(animate);
 };
