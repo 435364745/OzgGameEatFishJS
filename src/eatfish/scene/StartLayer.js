@@ -70,7 +70,7 @@ eatfish.scene.StartLayer.prototype.onButton = function(sender, eventType) {
 						{
 							//开始游戏
 							var s = new eatfish.scene.GameScene();
-							var t = cc.TransitionFade(cfg.transition, s);
+							var t = new cc.TransitionFade(cfg.transition, s);
 							cc.director.pushScene(t);
 						}
 						break;

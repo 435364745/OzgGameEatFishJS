@@ -18,7 +18,7 @@ eatfish.scene.InitLayer = eatfish.scene.BaseLayer.extend({
 
 eatfish.scene.InitLayer.prototype.goToStartLayer = function(delay) {
 	var s = new eatfish.scene.StartScene();
-	var t = cc.TransitionFade(cfg.transition, s);
+	var t = new cc.TransitionFade(cfg.transition, s);
 	cc.director.pushScene(t);
 }
 

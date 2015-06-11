@@ -142,7 +142,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		progress.setTag(eatfish.scene.GameLayerTag.progress);
 		this.addChild(progress);
 		
-		var fishLife = cc.Sprite(cc.spriteFrameCache.getSpriteFrame("fishlife.png"));
+		var fishLife = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("fishlife.png"));
 		fishLife.setPosition(70, 550);
 		fishLife.setTag(eatfish.scene.GameLayerTag.fishLife);
 		this.addChild(fishLife);
@@ -191,22 +191,22 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 	
 	//水母
 	if(Math.random() <= cfg.enemyJellyFish + offsetVal) {
-		var enemyFishNode = new eatfish.element.JellyfishNode();
+		var enemyFishNode1 = new eatfish.element.JellyfishNode();
 
-		var minVal = enemyFishNode.getContentSize().width / 2;
-		var maxVal = winSize.width - (enemyFishNode.getContentSize().width / 2);
+		var minVal = enemyFishNode1.getContentSize().width / 2;
+		var maxVal = winSize.width - (enemyFishNode1.getContentSize().width / 2);
 
 		srcX = randomFloat(minVal, maxVal);
 
-		enemyFishNode.setPosition(cc.p(srcX, -enemyFishNode.getContentSize().height / 2));
-		fishNode.addChild(enemyFishNode);
+		enemyFishNode1.setPosition(cc.p(srcX, -enemyFishNode1.getContentSize().height / 2));
+		fishNode.addChild(enemyFishNode1);
 
 		var moveTime = randomFloat(10.0, 15.0);
 
-		enemyFishNode.runAction(cc.Sequence.create(
-			cc.MoveTo.create(moveTime, cc.p(srcX, winSize.height + (enemyFishNode.getContentSize().height / 2))), 
-			cc.CallFunc.create(function() {
-				enemyFishNode.removeFromParent(true);
+		enemyFishNode1.runAction(cc.sequence(
+			cc.moveTo(moveTime, cc.p(srcX, winSize.height + (enemyFishNode.getContentSize().height / 2))),
+			cc.callFunc(function() {
+				enemyFishNode1.removeFromParent(true);
 			}, this)
 		));
 
@@ -226,7 +226,7 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 		var moveTime = randomFloat(15.0, 20.0);
 		itemNode.runAction(cc.Sequence.create(
 			cc.MoveTo.create(moveTime, cc.p(srcX, -itemNode.getContentSize().height / 2)),
-			cc.CallFunc.create(function() {
+			cc.callFunc(function() {
 				enemyFishNode.removeFromParent(true);
 			}, this)
 		));
@@ -1131,7 +1131,7 @@ eatfish.scene.GameLayer.prototype.onDialogBtnYes = function(sender) {
 	this.unscheduleUpdate();
 	
 	var s = new eatfish.scene.StartScene();
-	var t = cc.TransitionFade(cfg.transition, s);
+	var t = new cc.TransitionFade(cfg.transition, s);
 	cc.director.pushScene(t);	
 };
 

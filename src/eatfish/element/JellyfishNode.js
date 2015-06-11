@@ -3,6 +3,8 @@
 
 eatfish.element.JellyfishNode = eatfish.element.BaseEnemyFishNode.extend({
 	sprite:null,
+	_className : "eatfish.element.JellyfishNode",
+	moveTimeElapsed : null,
 	ctor:function () {		
 		this._super();
 		
@@ -12,7 +14,7 @@ eatfish.element.JellyfishNode = eatfish.element.BaseEnemyFishNode.extend({
 		this.animKey = cfg.animKeyJellyFish;
 		this.moveTimeElapsed = 0;
 		
-		var jellyfish = cc.Sprite(cc.spriteFrameCache.getSpriteFrame(this.animSpriteList[0]));
+		var jellyfish = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame(this.animSpriteList[0]));
 		jellyfish.setAnchorPoint(cc.p(0, 0));
 		jellyfish.setPosition(cc.p(0, 0));
 		jellyfish.setTag(eatfish.element.BaseNodeTag.mainObj);
