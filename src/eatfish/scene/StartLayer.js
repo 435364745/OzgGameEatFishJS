@@ -54,18 +54,14 @@ eatfish.scene.StartLayer = eatfish.scene.BaseLayer.extend({
 });
 
 eatfish.scene.StartLayer.prototype.onButton = function(sender, eventType) {
-	
 	switch(eventType) {
-		
 		case ccui.Widget.TOUCH_BEGAN:
-			
 			break;
 		case ccui.Widget.TOUCH_MOVED:
-	
 			break;
 		case ccui.Widget.TOUCH_ENDED:
 			{
-				switch(sender.getTag()) {					
+				switch(sender.getTag()) {
 					case eatfish.scene.StartLayerTag.btnStart:
 						{
 							//开始游戏
@@ -76,25 +72,20 @@ eatfish.scene.StartLayer.prototype.onButton = function(sender, eventType) {
 						break;
 					case eatfish.scene.StartLayerTag.btnHelp:
 						//点击了帮助按钮
-						
 						cc.audioEngine.playEffect(res.audios_btn_wav);
 						this.mainVisible(false);
 						this.helpVisible(true);
-						
 						break;
 					case eatfish.scene.StartLayerTag.helpBtnBack:
 						//在帮助界面点击了后退按钮
-						
 						cc.audioEngine.playEffect(res.audios_btn_wav);
 						this.mainVisible(true);
 						this.helpVisible(false);
-						
 						break;
 				}
 			}
 			break;
 	}
-		
 };
 
 eatfish.scene.StartLayer.prototype.mainVisible = function(visible) {

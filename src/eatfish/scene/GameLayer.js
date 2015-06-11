@@ -126,7 +126,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		btnPause.addTouchEventListener(this.onButton, this);
 		btnPause.setTag(eatfish.scene.GameLayerTag.btnPause);
 		this.addChild(btnPause);
-				
+
 		//左上角的部分
 		var progressBg = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("progress.png"));		
 		progressBg.setPosition(80, 610);
@@ -158,7 +158,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		fishLifeLab.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
 		fishLifeLab.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		this.addChild(fishLifeLab);
-		
+
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: this.onLayerTouchBegan,
@@ -204,7 +204,7 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 		var moveTime = randomFloat(10.0, 15.0);
 
 		enemyFishNode1.runAction(cc.sequence(
-			cc.moveTo(moveTime, cc.p(srcX, winSize.height + (enemyFishNode.getContentSize().height / 2))),
+			cc.moveTo(moveTime, cc.p(srcX, winSize.height + (enemyFishNode1.getContentSize().height / 2))),
 			cc.callFunc(function() {
 				enemyFishNode1.removeFromParent(true);
 			}, this)
@@ -225,17 +225,17 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 		
 		var moveTime = randomFloat(15.0, 20.0);
 		itemNode.runAction(cc.Sequence.create(
-			cc.MoveTo.create(moveTime, cc.p(srcX, -itemNode.getContentSize().height / 2)),
+			cc.moveTo(moveTime, cc.p(srcX, -itemNode.getContentSize().height / 2)),
 			cc.callFunc(function() {
-				enemyFishNode.removeFromParent(true);
+				itemNode.removeFromParent(true);
 			}, this)
 		));
 	}
 
 	//fish1
 	if(Math.random() <= cfg.enemyFish1 + offsetVal) {
-		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish1);
-		this.enemyFishEmergence(enemyFishNode);
+		var enemyFishNode2 = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish1);
+		this.enemyFishEmergence(enemyFishNode2);
 	}
 
 	//fish2
@@ -555,11 +555,12 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 				fishChildren[j].pause();
 			}
 			nodeList[i].pause();
-		}			
-		
+		}
+
 		var winSize = cc.director.getWinSize();
 
 		this.enabledTouchEvent(false);
+	//cc.director.pause();
 
 		//暂停界面
 		var pauseBg = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("pausebg.png"));
@@ -600,7 +601,6 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		else
 			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
 
-		pauseNode.addChild(btnSound);
 
 		var btnEffect = new ccui.Button();
 		btnEffect.loadTextureNormal(res.btn1_up_png);
@@ -616,8 +616,6 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
 		else
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
-
-		pauseNode.addChild(btnEffect);
 		
 		var btnExit = new ccui.Button();
 		btnExit.loadTextureNormal(res.btn1_up_png);
@@ -638,7 +636,7 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		pauseNode.addChild(labGithub);
 		
     }
-    
+
     this.unscheduleUpdate();
 	
 };
