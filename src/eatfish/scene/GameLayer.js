@@ -204,7 +204,7 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 		var moveTime = randomFloat(10.0, 15.0);
 
 		enemyFishNode1.runAction(cc.sequence(
-			cc.moveTo(moveTime, cc.p(srcX, winSize.height + (enemyFishNode.getContentSize().height / 2))),
+			cc.moveTo(moveTime, cc.p(srcX, winSize.height + (enemyFishNode1.getContentSize().height / 2))),
 			cc.callFunc(function() {
 				enemyFishNode1.removeFromParent(true);
 			}, this)
@@ -225,17 +225,17 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 		
 		var moveTime = randomFloat(15.0, 20.0);
 		itemNode.runAction(cc.Sequence.create(
-			cc.MoveTo.create(moveTime, cc.p(srcX, -itemNode.getContentSize().height / 2)),
+			cc.moveTo(moveTime, cc.p(srcX, -itemNode.getContentSize().height / 2)),
 			cc.callFunc(function() {
-				enemyFishNode.removeFromParent(true);
+				itemNode.removeFromParent(true);
 			}, this)
 		));
 	}
 
 	//fish1
 	if(Math.random() <= cfg.enemyFish1 + offsetVal) {
-		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish1);
-		this.enemyFishEmergence(enemyFishNode);
+		var enemyFishNode2 = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish1);
+		this.enemyFishEmergence(enemyFishNode2);
 	}
 
 	//fish2
