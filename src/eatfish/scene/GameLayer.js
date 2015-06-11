@@ -126,7 +126,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		btnPause.addTouchEventListener(this.onButton, this);
 		btnPause.setTag(eatfish.scene.GameLayerTag.btnPause);
 		this.addChild(btnPause);
-				
+
 		//左上角的部分
 		var progressBg = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("progress.png"));		
 		progressBg.setPosition(80, 610);
@@ -158,7 +158,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		fishLifeLab.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
 		fishLifeLab.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		this.addChild(fishLifeLab);
-		
+
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: this.onLayerTouchBegan,
@@ -555,11 +555,12 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 				fishChildren[j].pause();
 			}
 			nodeList[i].pause();
-		}			
-		
+		}
+
 		var winSize = cc.director.getWinSize();
 
 		this.enabledTouchEvent(false);
+	//cc.director.pause();
 
 		//暂停界面
 		var pauseBg = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("pausebg.png"));
@@ -600,7 +601,6 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		else
 			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
 
-		pauseNode.addChild(btnSound);
 
 		var btnEffect = new ccui.Button();
 		btnEffect.loadTextureNormal(res.btn1_up_png);
@@ -616,8 +616,6 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
 		else
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
-
-		pauseNode.addChild(btnEffect);
 		
 		var btnExit = new ccui.Button();
 		btnExit.loadTextureNormal(res.btn1_up_png);
@@ -638,7 +636,7 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		pauseNode.addChild(labGithub);
 		
     }
-    
+
     this.unscheduleUpdate();
 	
 };
