@@ -1,7 +1,7 @@
 {
   "project_type": "javascript",
   "debugMode": 1,
-  "showFPS": true,
+  "showFPS": false,
   "frameRate": 60,
   "id": "gameCanvas",
   "renderMode": 0,
@@ -27,6 +27,6 @@
     "src/eatfish/scene/BaseLayer.js",
     "src/eatfish/scene/GameLayer.js",
     "src/eatfish/scene/StartLayer.js",
-    "src/eatfish/scene/LoadScene.js"
+    "src/loadScene.js"
   ]
 }
