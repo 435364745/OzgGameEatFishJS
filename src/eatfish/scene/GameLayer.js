@@ -920,8 +920,18 @@ eatfish.scene.GameLayer.prototype.enabledTouchEvent = function(enabled) {
 //点击事件 end
 //这里的this不是eatfish.scene.GameLayer实例
 eatfish.scene.GameLayer.prototype.onLayerTouchBegan = function(touch, event) {
-	
-	return true;
+	//var winSize = cc.director.getWinSize();
+	//var fishNode = event.getCurrentTarget().getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+	////判断是否点击到player
+	//// 获取点击坐标[基于本地坐标]
+	//var locationInNode = fishNode.convertToNodeSpace(touch.getLocation());
+	//// 获取当前节点大小
+	//var size = fishNode.getContentSize();
+	//// 区域设定
+	//var rect = cc.rect(0, 0, size.width, size.height);
+	//// 判断触摸点是否在节点区域内
+	//return cc.rectContainsPoint(rect, locationInNode);
+
 };
 
 eatfish.scene.GameLayer.prototype.onLayerTouchMoved = function(touch, event) {
