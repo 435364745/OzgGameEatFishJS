@@ -66,7 +66,7 @@ cc.game.onStart = function(){
     
     //load resources
     LoaderScene.preload(g_resources, function () {
-        var s = new eatfish.scene.StartScene();
+        var s = new StartScene();
         var t = new cc.TransitionFade(cfg.transition, s);
         cc.director.runScene(t);
     	//cc.director.runScene(new eatfish.scene.InitScene());
