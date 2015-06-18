@@ -12,7 +12,7 @@ LoaderScene = cc.LoaderScene.extend({
         self.addChild(bgLayer, 0);
 
         //logo
-        var logoWidth = 160;
+        //var logoWidth = 160;
         var logoHeight = 200;
 
         var logo = new cc.Sprite(res.Default_png);
