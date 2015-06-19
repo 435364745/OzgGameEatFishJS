@@ -1,9 +1,8 @@
 /**
  * Created by licamla on 2015/6/11.
- *
  */
 
-LoaderScene = cc.LoaderScene.extend({
+var LoaderScene = cc.LoaderScene.extend({
    _className : "eatfish.scene.LoaderScene" ,
     init : function(){
         var self = this;
