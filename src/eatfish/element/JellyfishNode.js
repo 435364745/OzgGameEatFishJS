@@ -3,8 +3,6 @@
 
 eatfish.element.JellyfishNode = eatfish.element.BaseEnemyFishNode.extend({
 	sprite:null,
-	_className : "eatfish.element.JellyfishNode",
-	moveTimeElapsed : null,
 	ctor:function () {		
 		this._super();
 		

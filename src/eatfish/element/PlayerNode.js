@@ -15,7 +15,6 @@ eatfish.element.PlayerNodeTag = {
 };
 
 eatfish.element.PlayerNode = eatfish.element.BaseFishNode.extend({
-	_className : "eatfish.element.PlayerNode",
 	sprite:null,
 	ctor:function () {		
 		this._super();
@@ -34,6 +33,7 @@ eatfish.element.PlayerNode = eatfish.element.BaseFishNode.extend({
 		this.addChild(fish);
 		
 		this.setAnchorPoint(0.5, 0.5);
+		this.setContentSize(fish.getContentSize());
 
 		var center = new cc.Node();
 		center.setAnchorPoint(0.5, 0.5);
@@ -41,7 +41,7 @@ eatfish.element.PlayerNode = eatfish.element.BaseFishNode.extend({
 		center.setTag(eatfish.element.BaseNodeTag.centerPoint);
 		center.setContentSize(cc.size(16, 16));
 		this.addChild(center);
-		this.setContentSize(cc.size(16, 16));
+
 		this.changeStatus(this.status);
 		
 		return true;

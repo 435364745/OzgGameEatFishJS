@@ -62,11 +62,8 @@ var cfg = {
 	
 	//窗口大小
 	windowWidth: 960.0,
-	windowHeight: 640.0,
-	audio:{
-		music: false,
-        effect: false
-	}
+	windowHeight: 640.0
+	
 };
 
 //定义本游戏的命名空间
