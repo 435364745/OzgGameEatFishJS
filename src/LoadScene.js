@@ -1,5 +1,6 @@
 /**
  * Created by licamla on 2015/6/11.
+ *
  */
 
 LoaderScene = cc.LoaderScene.extend({
