@@ -65,8 +65,11 @@ cc.game.onStart = function(){
     //声音处理结束
     
     //load resources
-    cc.LoaderScene.preload(g_resources, function () {
-    	cc.director.runScene(new eatfish.scene.InitScene());
+    LoaderScene.preload(g_resources, function () {
+        var s = new StartScene();
+        var t = new cc.TransitionFade(cfg.transition, s);
+        cc.director.runScene(t);
+    	//cc.director.runScene(new eatfish.scene.InitScene());
     }, this);
 };
 cc.game.run();

@@ -126,7 +126,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		btnPause.addTouchEventListener(this.onButton, this);
 		btnPause.setTag(eatfish.scene.GameLayerTag.btnPause);
 		this.addChild(btnPause);
-				
+
 		//左上角的部分
 		var progressBg = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("progress.png"));		
 		progressBg.setPosition(80, 610);
@@ -142,7 +142,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		progress.setTag(eatfish.scene.GameLayerTag.progress);
 		this.addChild(progress);
 		
-		var fishLife = cc.Sprite(cc.spriteFrameCache.getSpriteFrame("fishlife.png"));
+		var fishLife = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("fishlife.png"));
 		fishLife.setPosition(70, 550);
 		fishLife.setTag(eatfish.scene.GameLayerTag.fishLife);
 		this.addChild(fishLife);
@@ -158,7 +158,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		fishLifeLab.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
 		fishLifeLab.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		this.addChild(fishLifeLab);
-		
+
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: this.onLayerTouchBegan,
@@ -191,22 +191,22 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 	
 	//水母
 	if(Math.random() <= cfg.enemyJellyFish + offsetVal) {
-		var enemyFishNode = new eatfish.element.JellyfishNode();
+		var enemyFishNode1 = new eatfish.element.JellyfishNode();
 
-		var minVal = enemyFishNode.getContentSize().width / 2;
-		var maxVal = winSize.width - (enemyFishNode.getContentSize().width / 2);
+		var minVal = enemyFishNode1.getContentSize().width / 2;
+		var maxVal = winSize.width - (enemyFishNode1.getContentSize().width / 2);
 
 		srcX = randomFloat(minVal, maxVal);
 
-		enemyFishNode.setPosition(cc.p(srcX, -enemyFishNode.getContentSize().height / 2));
-		fishNode.addChild(enemyFishNode);
+		enemyFishNode1.setPosition(cc.p(srcX, -enemyFishNode1.getContentSize().height / 2));
+		fishNode.addChild(enemyFishNode1);
 
 		var moveTime = randomFloat(10.0, 15.0);
 
-		enemyFishNode.runAction(cc.Sequence.create(
-			cc.MoveTo.create(moveTime, cc.p(srcX, winSize.height + (enemyFishNode.getContentSize().height / 2))), 
-			cc.CallFunc.create(function() {
-				enemyFishNode.removeFromParent(true);
+		enemyFishNode1.runAction(cc.sequence(
+			cc.moveTo(moveTime, cc.p(srcX, winSize.height + (enemyFishNode1.getContentSize().height / 2))),
+			cc.callFunc(function() {
+				enemyFishNode1.removeFromParent(true);
 			}, this)
 		));
 
@@ -225,17 +225,17 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 		
 		var moveTime = randomFloat(15.0, 20.0);
 		itemNode.runAction(cc.Sequence.create(
-			cc.MoveTo.create(moveTime, cc.p(srcX, -itemNode.getContentSize().height / 2)),
-			cc.CallFunc.create(function() {
-				enemyFishNode.removeFromParent(true);
+			cc.moveTo(moveTime, cc.p(srcX, -itemNode.getContentSize().height / 2)),
+			cc.callFunc(function() {
+				itemNode.removeFromParent(true);
 			}, this)
 		));
 	}
 
 	//fish1
 	if(Math.random() <= cfg.enemyFish1 + offsetVal) {
-		var enemyFishNode = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish1);
-		this.enemyFishEmergence(enemyFishNode);
+		var enemyFishNode2 = new eatfish.element.EnemyFishNode(eatfish.element.EnemyFishType.fish1);
+		this.enemyFishEmergence(enemyFishNode2);
 	}
 
 	//fish2
@@ -555,11 +555,12 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 				fishChildren[j].pause();
 			}
 			nodeList[i].pause();
-		}			
-		
+		}
+
 		var winSize = cc.director.getWinSize();
 
 		this.enabledTouchEvent(false);
+	//cc.director.pause();
 
 		//暂停界面
 		var pauseBg = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("pausebg.png"));
@@ -600,7 +601,6 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		else
 			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
 
-		pauseNode.addChild(btnSound);
 
 		var btnEffect = new ccui.Button();
 		btnEffect.loadTextureNormal(res.btn1_up_png);
@@ -616,8 +616,6 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
 		else
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
-
-		pauseNode.addChild(btnEffect);
 		
 		var btnExit = new ccui.Button();
 		btnExit.loadTextureNormal(res.btn1_up_png);
@@ -638,7 +636,7 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		pauseNode.addChild(labGithub);
 		
     }
-    
+
     this.unscheduleUpdate();
 	
 };
@@ -922,8 +920,18 @@ eatfish.scene.GameLayer.prototype.enabledTouchEvent = function(enabled) {
 //点击事件 end
 //这里的this不是eatfish.scene.GameLayer实例
 eatfish.scene.GameLayer.prototype.onLayerTouchBegan = function(touch, event) {
-	
-	return true;
+	//var winSize = cc.director.getWinSize();
+	//var fishNode = event.getCurrentTarget().getChildByTag(eatfish.scene.GameLayerTag.fishNode);
+	////判断是否点击到player
+	//// 获取点击坐标[基于本地坐标]
+	//var locationInNode = fishNode.convertToNodeSpace(touch.getLocation());
+	//// 获取当前节点大小
+	//var size = fishNode.getContentSize();
+	//// 区域设定
+	//var rect = cc.rect(0, 0, size.width, size.height);
+	//// 判断触摸点是否在节点区域内
+	//return cc.rectContainsPoint(rect, locationInNode);
+
 };
 
 eatfish.scene.GameLayer.prototype.onLayerTouchMoved = function(touch, event) {
@@ -1131,7 +1139,7 @@ eatfish.scene.GameLayer.prototype.onDialogBtnYes = function(sender) {
 	this.unscheduleUpdate();
 	
 	var s = new eatfish.scene.StartScene();
-	var t = cc.TransitionFade(cfg.transition, s);
+	var t = new cc.TransitionFade(cfg.transition, s);
 	cc.director.pushScene(t);	
 };
 

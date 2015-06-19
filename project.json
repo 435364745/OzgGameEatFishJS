@@ -7,14 +7,17 @@
   "renderMode": 0,
   "engineDir": "frameworks/cocos2d-html5",
   "modules": [
-    "cocos2d"
+    "cocos2d" , "ccui"
   ],
   "jsList": [
     "src/resource.js",
     "src/ozgjs/Utility.js",
     "src/ozgjs/HashMap.js",
-    "src/eatfish/Strings.js",
-    "src/eatfish/GameConfig.js",
+
+    "src/Strings.js",
+    "src/GameConfig.js",
+    "src/base/baseLayer.js",
+
     "src/eatfish/element/AnimData.js",
     "src/eatfish/element/BaseNode.js",
     "src/eatfish/element/DialogNode.js",
@@ -26,7 +29,9 @@
     "src/eatfish/element/ItemNode.js",
     "src/eatfish/scene/BaseLayer.js",
     "src/eatfish/scene/GameLayer.js",
-    "src/eatfish/scene/StartLayer.js",
-    "src/eatfish/scene/InitLayer.js"
+
+    "src/loadScene.js",
+    "src/startScene/startScene.js",
+    "src/helpScene/helpScene.js"
   ]
 }
