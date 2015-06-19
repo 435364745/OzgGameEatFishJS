@@ -56,6 +56,9 @@ var StartLayer = BaseLayer.extend({
         if(cfg.audio.effect){
             cc.audioEngine.playEffect(res.audios_btn_wav);
         }
+        var s = new HelpScene();
+        var t = new cc.TransitionFade(cfg.transition, s);
+        cc.director.pushScene(t);
         //this.mainVisible(false);
         //this.helpVisible(true);
     }

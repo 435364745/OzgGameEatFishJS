@@ -29,7 +29,6 @@
     "src/eatfish/element/ItemNode.js",
     "src/eatfish/scene/BaseLayer.js",
     "src/eatfish/scene/GameLayer.js",
-    "src/eatfish/scene/StartLayer.js",
 
     "src/loadScene.js",
     "src/startScene/startScene.js",
