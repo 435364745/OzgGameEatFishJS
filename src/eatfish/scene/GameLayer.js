@@ -542,7 +542,9 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 };
 
 eatfish.scene.GameLayer.prototype.scenePause = function() {
-
+	
+	this.unscheduleUpdate();
+	
 	if(this.getChildByTag(eatfish.scene.GameLayerTag.pauseNode))
 		return;
 
@@ -592,10 +594,9 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		btnSound.addTouchEventListener(this.onButton, this);
 		btnSound.setTag(eatfish.scene.GameLayerTag.btnSound);
 		btnSound.setTitleFontName(cfg.globalFontName01);
-		btnSound.setTitleFontSize(22.0);		
-		pauseNode.addChild(btnSound);
+		btnSound.setTitleFontSize(22.0);	
 		
-		if(cc.sys.localStorage.getItem(cfg.bgSound))
+		if(cc.sys.localStorage.getItem(cfg.bgSound) && cc.sys.localStorage.getItem(cfg.bgSound) == "yes")
 			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
 		else
 			btnSound.setTitleText(strings.pauseSound + "(" + strings.pauseOn + ")");
@@ -609,10 +610,9 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		btnEffect.addTouchEventListener(this.onButton, this);
 		btnEffect.setTag(eatfish.scene.GameLayerTag.btnEffect);
 		btnEffect.setTitleFontName(cfg.globalFontName01);
-		btnEffect.setTitleFontSize(22.0);		
-		pauseNode.addChild(btnEffect);
+		btnEffect.setTitleFontSize(22.0);
 
-		if(cc.sys.localStorage.getItem(cfg.effectSound))
+		if(cc.sys.localStorage.getItem(cfg.effectSound) && cc.sys.localStorage.getItem(cfg.effectSound) == "yes")
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOff + ")");
 		else
 			btnEffect.setTitleText(strings.pauseEffect + "(" + strings.pauseOn + ")");
@@ -639,7 +639,7 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		
     }
     
-    this.unscheduleUpdate();
+    
 	
 };
 
@@ -697,7 +697,7 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 				case eatfish.scene.GameLayerTag.btnSound:
 					{
 						//背景音乐
-						if(!cc.sys.localStorage.getItem(cfg.bgSound) || cc.sys.localStorage.getItem(cfg.bgSound) == "no") {				
+						if(!cc.sys.localStorage.getItem(cfg.bgSound) || cc.sys.localStorage.getItem(cfg.bgSound) == "no") {
 							cc.audioEngine.setMusicVolume(1.0);				
 							cc.sys.localStorage.setItem(cfg.bgSound, "yes");
 							sender.setTitleText(strings.pauseSound + "(" + strings.pauseOff + ")");
