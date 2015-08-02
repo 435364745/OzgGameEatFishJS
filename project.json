@@ -1,33 +1,36 @@
 {
-  "project_type": "javascript",
-  "debugMode": 1,
-  "showFPS": false,
-  "frameRate": 60,
-  "id": "gameCanvas",
-  "renderMode": 0,
-  "engineDir": "frameworks/cocos2d-html5",
-  "modules": [
-    "cocos2d",
-    "ccui"
-  ],
-  "jsList": [
-    "src/resource.js",
-    "src/ozgjs/Utility.js",
-    "src/ozgjs/HashMap.js",
-    "src/eatfish/Strings.js",
-    "src/eatfish/GameConfig.js",
-    "src/eatfish/element/AnimData.js",
-    "src/eatfish/element/BaseNode.js",
-    "src/eatfish/element/DialogNode.js",
-    "src/eatfish/element/BaseFishNode.js",
-    "src/eatfish/element/BaseEnemyFishNode.js",
-    "src/eatfish/element/EnemyFishNode.js",
-    "src/eatfish/element/JellyfishNode.js",
-    "src/eatfish/element/PlayerNode.js",
-    "src/eatfish/element/ItemNode.js",
-    "src/eatfish/scene/BaseLayer.js",
-    "src/eatfish/scene/GameLayer.js",
-    "src/eatfish/scene/StartLayer.js",
-    "src/eatfish/scene/InitLayer.js"
-  ]
+    "project_type": "javascript",
+
+    "debugMode" : 1,
+    "showFPS" : false,
+    "frameRate" : 60,
+    "id" : "gameCanvas",
+    "renderMode" : 0,
+    "engineDir":"frameworks/cocos2d-html5",
+
+    "modules" : [
+		"cocos2d",
+		"ccui"
+	],
+
+    "jsList" : [
+        "src/resource.js",
+		"src/ozgjs/Utility.js",
+		"src/ozgjs/HashMap.js",
+		"src/eatfish/Strings.js",
+		"src/eatfish/GameConfig.js",
+		"src/eatfish/element/AnimData.js",
+		"src/eatfish/element/BaseNode.js",
+		"src/eatfish/element/DialogNode.js",
+		"src/eatfish/element/BaseFishNode.js",
+		"src/eatfish/element/BaseEnemyFishNode.js",
+		"src/eatfish/element/EnemyFishNode.js",
+		"src/eatfish/element/JellyfishNode.js",
+		"src/eatfish/element/PlayerNode.js",
+		"src/eatfish/element/ItemNode.js",
+		"src/eatfish/scene/BaseLayer.js",
+		"src/eatfish/scene/GameLayer.js",
+		"src/eatfish/scene/StartLayer.js",
+		"src/eatfish/scene/InitLayer.js"
+    ]
 }

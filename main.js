@@ -48,11 +48,19 @@
  */
 
 cc.game.onStart = function(){
+    if(!cc.sys.isNative && document.getElementById("cocosLoading")) //If referenced loading.js, please remove it
+        document.body.removeChild(document.getElementById("cocosLoading"));
+
+    // Pass true to enable retina display, disabled by default to improve performance
+    cc.view.enableRetina(false);
+    // Adjust viewport meta
     cc.view.adjustViewPort(true);
+    // Setup the resolution policy and design resolution size
     cc.view.setDesignResolutionSize(cfg.windowWidth, cfg.windowHeight, cc.ResolutionPolicy.SHOW_ALL);
+    // The game will be resized when browser size change
     cc.view.resizeWithBrowserSize(true);
-    
-    //声音的处理
+    	
+	//声音的处理
     if(!cc.sys.localStorage.getItem(cfg.bgSound) || cc.sys.localStorage.getItem(cfg.bgSound) == "yes")
     	cc.audioEngine.setMusicVolume(1.0);
     else
@@ -63,10 +71,10 @@ cc.game.onStart = function(){
     else
     	cc.audioEngine.setEffectsVolume(0.0);
     //声音处理结束
-    
-    //load resources
+	
+	//load resources
     cc.LoaderScene.preload(g_resources, function () {
-    	cc.director.runScene(new eatfish.scene.InitScene());
+        cc.director.runScene(new eatfish.scene.InitScene());
     }, this);
 };
 cc.game.run();
