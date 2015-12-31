@@ -183,7 +183,7 @@ eatfish.element.PlayerNode.prototype.cump = function(enemyFishType) {
 		cc.audioEngine.playEffect(res.audios_eatgold_mp3);
 	}
 		
-	var scoreEffect = new ccui.TextField();
+	var scoreEffect = new cc.LabelTTF("", cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 	switch(enemyFishType) {
 		case eatfish.element.EnemyFishType.fish2:
 			scoreEffect.setString("+" + cfg.scoreFish2);
@@ -205,16 +205,13 @@ eatfish.element.PlayerNode.prototype.cump = function(enemyFishType) {
 			break;
 	}
 	
-	scoreEffect.setFontSize(24);
-	scoreEffect.setFontName(cfg.globalFontName01);
-
 	if(enemyFishType < 100) {
 		//吃了鱼
-		scoreEffect.setTextColor(cc.color(255, 255, 0, 255));
+		scoreEffect.setFontFillColor(cc.color(255, 255, 0, 255));
 	}
 	else {
 		//吃了道具
-		scoreEffect.setTextColor(cc.color(50, 220, 50, 255));
+		scoreEffect.setFontFillColor(cc.color(50, 220, 50, 255));
 	}		
 	
 	scoreEffect.setPosition(this.getContentSize().width / 2, this.getContentSize().height);

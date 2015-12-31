@@ -36,18 +36,12 @@ eatfish.element.DialogNode = cc.Node.extend({
 		this.setAnchorPoint(0.5, 0.5);
 		bgSprite.setPosition(this.getContentSize().width / 2, this.getContentSize().height / 2);
 		
-		var labTitle = new ccui.TextField();
-		labTitle.setString(title);
-		labTitle.setFontName(cfg.globalFontName01);
-		labTitle.setFontSize(32);
+		var labTitle = new cc.LabelTTF(title, cfg.globalFontName01, 32, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		labTitle.setPosition(this.getContentSize().width / 2, 170);
 		labTitle.setTag(eatfish.element.DialogNodeTag.labTitle);
 		this.addChild(labTitle);
 		
-		var labContent = new ccui.TextField();
-		labContent.setString(content);
-		labContent.setFontName(cfg.globalFontName01);
-		labContent.setFontSize(25);
+		var labContent = new cc.LabelTTF(content, cfg.globalFontName01, 25, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		labContent.setPosition(this.getContentSize().width / 2, 115);
 		labContent.setTag(eatfish.element.DialogNodeTag.labContent);
 		this.addChild(labContent);

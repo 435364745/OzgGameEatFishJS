@@ -126,48 +126,36 @@ eatfish.scene.StartLayer.prototype.helpVisible = function(visible) {
 		}
 		//title
 		if(!helpTitle) {
-			helpTitle = new ccui.TextField();
-			helpTitle.setString(strings.helpTitle);
-			helpTitle.setFontName(cfg.globalFontName02);
-			helpTitle.setFontSize(36);
+			helpTitle = new cc.LabelTTF(strings.helpTitle, cfg.globalFontName02, 36, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 			helpTitle.setTag(eatfish.scene.StartLayerTag.helpTitle);
 			helpTitle.setPosition(480, 535);
-			helpTitle.setTextColor(cc.color(255, 255, 0, 255));
+			helpTitle.setFontFillColor(cc.color(255, 255, 0));
 			this.addChild(helpTitle);
 		}
 		//lab1
 		if(!helpLab1) {
-			helpLab1 = new ccui.TextField();
-			helpLab1.setString(strings.helpLab1);
-			helpLab1.setFontName(cfg.globalFontName01);
-			helpLab1.setFontSize(24);
+			helpLab1 = new cc.LabelTTF(strings.helpLab1, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 			helpLab1.setTag(eatfish.scene.StartLayerTag.helpLab1);
 			helpLab1.setPosition(480, 385);
-			helpLab1.setTextColor(cc.color(255, 255, 255, 255));
+			helpLab1.setFontFillColor(cc.color(255, 255, 255));
 			this.addChild(helpLab1);
 
 		}
 		//lab2
 		if(!helpLab2) {
-			helpLab2 = new ccui.TextField();
-			helpLab2.setString(strings.helpLab2);
-			helpLab2.setFontName(cfg.globalFontName01);
-			helpLab2.setFontSize(24);
+			helpLab2 = new cc.LabelTTF(strings.helpLab2, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 			helpLab2.setTag(eatfish.scene.StartLayerTag.helpLab2);
 			helpLab2.setPosition(480, 245);
-			helpLab2.setTextColor(cc.color(255, 255, 255, 255));
+			helpLab2.setFontFillColor(cc.color(255, 255, 255));
 			this.addChild(helpLab2);
 
 		}
 		//lab3
 		if(!helpLab3) {
-			helpLab3 = new ccui.TextField();
-			helpLab3.setString(strings.helpLab3);
-			helpLab3.setFontName(cfg.globalFontName01);
-			helpLab3.setFontSize(24);
+			helpLab3 = new cc.LabelTTF(strings.helpLab3, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);			
 			helpLab3.setTag(eatfish.scene.StartLayerTag.helpLab3);
 			helpLab3.setPosition(480, 105);
-			helpLab3.setTextColor(cc.color(255, 255, 255, 255));
+			helpLab3.setFontFillColor(cc.color(255, 255, 255));
 			this.addChild(helpLab3);
 			
 		}

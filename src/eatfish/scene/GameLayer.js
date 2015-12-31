@@ -94,28 +94,16 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		this.addChild(fishNode);
 		
 		//右上角的部分
-		var stageNumLab = new ccui.TextField();
-		stageNumLab.setString(strings.gameSceneLabStageNum + this.stageNum.toString());
-		stageNumLab.setFontName(cfg.globalFontName01);
-		stageNumLab.setFontSize(30);
+		var stageNumLab = new cc.LabelTTF(strings.gameSceneLabStageNum + this.stageNum.toString(), cfg.globalFontName01, 30, cc.size(400, 40), cc.TEXT_ALIGNMENT_LEFT, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		stageNumLab.setTag(eatfish.scene.GameLayerTag.labStageNum);
-		stageNumLab.setPosition(winSize.width - 100, winSize.height - 24);
-		stageNumLab.setTextColor(cc.color(255, 255, 255, 255));
-		stageNumLab.setTextAreaSize(cc.size(200, 40));
-		stageNumLab.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
-		stageNumLab.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
+		stageNumLab.setPosition(winSize.width, winSize.height - 24);
+		stageNumLab.setFontFillColor(cc.color(255, 255, 255));
 		this.addChild(stageNumLab);
 		
-		var scoreLab = new ccui.TextField();
-		scoreLab.setString(strings.gameSceneLabScore + this.score.toString());
-		scoreLab.setFontName(cfg.globalFontName01);
-		scoreLab.setFontSize(30);
+		var scoreLab = new cc.LabelTTF(strings.gameSceneLabScore + this.score.toString(), cfg.globalFontName01, 30, cc.size(400, 40), cc.TEXT_ALIGNMENT_LEFT, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		scoreLab.setTag(eatfish.scene.GameLayerTag.labScore);
-		scoreLab.setPosition(winSize.width - 100, winSize.height - 56);
-		scoreLab.setTextColor(cc.color(255, 255, 255, 255));
-		scoreLab.setTextAreaSize(cc.size(200, 40));
-		scoreLab.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
-		scoreLab.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
+		scoreLab.setPosition(winSize.width, winSize.height - 56);
+		scoreLab.setFontFillColor(cc.color(255, 255, 255));
 		this.addChild(scoreLab);
 		
 		//暂停按钮
@@ -147,16 +135,10 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		fishLife.setTag(eatfish.scene.GameLayerTag.fishLife);
 		this.addChild(fishLife);
 		
-		var fishLifeLab = new ccui.TextField();
-		fishLifeLab.setString(this.playerLife.toString());
-		fishLifeLab.setFontName(cfg.globalFontName01);
-		fishLifeLab.setFontSize(30);
+		var fishLifeLab = new cc.LabelTTF(this.playerLife.toString(), cfg.globalFontName01, 30, cc.size(100, 40), cc.TEXT_ALIGNMENT_LEFT, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		fishLifeLab.setTag(eatfish.scene.GameLayerTag.labFishLife);
 		fishLifeLab.setPosition(140, 540);
-		fishLifeLab.setTextColor(cc.color(255, 255, 255, 255));
-		fishLifeLab.setTextAreaSize(cc.size(100, 40));
-		fishLifeLab.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
-		fishLifeLab.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
+		fishLifeLab.setFontFillColor(cc.color(255, 255, 255));
 		this.addChild(fishLifeLab);
 		
 		cc.eventManager.addListener({
@@ -382,43 +364,22 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 								var fishNum = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("fishnum.png"));
 								fishNum.setPosition(clearNode.getContentSize().width / 2, clearNode.getContentSize().height / 2);
 								clearNode.addChild(fishNum);
-																
-								var title = new ccui.TextField();
-								title.setString(strings.clearTitle);
-								title.setFontName(cfg.globalFontName01);
-								title.setFontSize(50);
+								
+								var title = new cc.LabelTTF(strings.clearTitle, cfg.globalFontName01, 50, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 								title.setTag(eatfish.scene.StartLayerTag.helpTitle);
 								title.setPosition(clearNode.getContentSize().width / 2, 470);
 								clearNode.addChild(title);
 								
-								var gameClearLab1 = new ccui.TextField();
-								gameClearLab1.setString(this.eatFishTotalType1And2);
-								gameClearLab1.setFontName(cfg.globalFontName01);
-								gameClearLab1.setFontSize(30);
+								var gameClearLab1 = new cc.LabelTTF(this.eatFishTotalType1And2, cfg.globalFontName01, 30, cc.size(500, 40), cc.TEXT_ALIGNMENT_LEFT, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 								gameClearLab1.setPosition(730, 330);
-								gameClearLab1.setTextAreaSize(cc.size(500, 40));
-								gameClearLab1.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
-								gameClearLab1.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 								clearNode.addChild(gameClearLab1);
 								
-								var gameClearLab2 = new ccui.TextField();
-								gameClearLab2.setString(this.eatFishTotalType3);
-								gameClearLab2.setFontName(cfg.globalFontName01);
-								gameClearLab2.setFontSize(30);
+								var gameClearLab2 = new cc.LabelTTF(this.eatFishTotalType3, cfg.globalFontName01, 30, cc.size(500, 40), cc.TEXT_ALIGNMENT_LEFT, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 								gameClearLab2.setPosition(730, 255);
-								gameClearLab2.setTextAreaSize(cc.size(500, 40));
-								gameClearLab2.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
-								gameClearLab2.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 								clearNode.addChild(gameClearLab2);
 								
-								var gameClearLab3 = new ccui.TextField();
-								gameClearLab3.setString(this.eatFishTotalType4);
-								gameClearLab3.setFontName(cfg.globalFontName01);
-								gameClearLab3.setFontSize(30);
+								var gameClearLab3 = new cc.LabelTTF(this.eatFishTotalType4, cfg.globalFontName01, 30, cc.size(500, 40), cc.TEXT_ALIGNMENT_LEFT, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 								gameClearLab3.setPosition(730, 180);
-								gameClearLab3.setTextAreaSize(cc.size(500, 40));
-								gameClearLab3.setTextHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
-								gameClearLab3.setTextVerticalAlignment(cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 								clearNode.addChild(gameClearLab3);
 
 								var btnExit = new ccui.Button();
@@ -483,17 +444,11 @@ eatfish.scene.GameLayer.prototype.update = function(delay) {
 									this.addChild(gameoverNode);
 									gameoverNode.addChild(gameoverBg);
 									
-									var title = new ccui.TextField();
-									title.setString(strings.gameoverTitle);
-									title.setFontName(cfg.globalFontName01);
-									title.setFontSize(50);
+									var title = new cc.LabelTTF(strings.gameoverTitle, cfg.globalFontName01, 50, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 									title.setPosition(gameoverNode.getContentSize().width / 2, 430);
 									gameoverNode.addChild(title);
 									
-									var content = new ccui.TextField();
-									content.setString(strings.gameoverContent);
-									content.setFontName(cfg.globalFontName01);
-									content.setFontSize(30);
+									var content = new cc.LabelTTF(strings.gameoverContent, cfg.globalFontName01, 30, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 									content.setPosition(gameoverNode.getContentSize().width / 2, 350);
 									gameoverNode.addChild(content);
 									
@@ -630,10 +585,7 @@ eatfish.scene.GameLayer.prototype.scenePause = function() {
 		btnExit.setTitleText(strings.pauseExit);
 		pauseNode.addChild(btnExit);
 				
-		var labGithub = new ccui.TextField();
-		labGithub.setString("github:https://github.com/ouzhigang/OzgGameEatFishJS");
-		labGithub.setFontName(cfg.globalFontName01);
-		labGithub.setFontSize(20);
+		var labGithub = new cc.LabelTTF("github:https://github.com/ouzhigang/OzgGameEatFishJS", cfg.globalFontName01, 20, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
 		labGithub.setPosition(650, 210);
 		pauseNode.addChild(labGithub);
 		
