@@ -154,11 +154,11 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		player.setTag(eatfish.scene.GameLayerTag.fishPlayer);
 		fishNode.addChild(player, 99999);
 		player.invincible();
-
-		//配合过场的时间，所以延时执行这个方法
-		this.scheduleOnce(this.gameStart, cfg.transition);
-
+		
 		return true;
+	},
+	onEnterTransitionDidFinish: function() {
+		this.gameStart();
 	}
 });
 
@@ -763,7 +763,7 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 						fishNode.addChild(player, 99999);
 						player.invincible();
 						
-						this.gameStart(cfg.transition);
+						this.gameStart();
 					}
 					break;
 				case eatfish.scene.GameLayerTag.btnRestart:
@@ -805,7 +805,7 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 						fishNode.addChild(player, 99999);
 						player.invincible();
 			
-						this.gameStart(cfg.transition);
+						this.gameStart();
 					}
 					break;
 				default:
@@ -816,7 +816,7 @@ eatfish.scene.GameLayer.prototype.onButton = function(sender, eventType) {
 	
 };
 
-eatfish.scene.GameLayer.prototype.gameStart = function(delay) {
+eatfish.scene.GameLayer.prototype.gameStart = function() {
 	cc.audioEngine.playEffect(res.audios_fishstart_mp3);
 
 	var fishNode = this.getChildByTag(eatfish.scene.GameLayerTag.fishNode);
