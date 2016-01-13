@@ -50,147 +50,148 @@ eatfish.scene.StartLayer = eatfish.scene.BaseLayer.extend({
 		this.addChild(btnHelp);
 		
 		return true;
-	}
-});
-
-eatfish.scene.StartLayer.prototype.onButton = function(sender, eventType) {
+	},
 	
-	switch(eventType) {
-		
-		case ccui.Widget.TOUCH_BEGAN:
+	onButton: function(sender, eventType) {
+	
+		switch(eventType) {
 			
-			break;
-		case ccui.Widget.TOUCH_MOVED:
-	
-			break;
-		case ccui.Widget.TOUCH_ENDED:
-			{
-				switch(sender.getTag()) {					
-					case eatfish.scene.StartLayerTag.btnStart:
-						{
-							//开始游戏
-							var s = new eatfish.scene.GameScene();
-							var t = new cc.TransitionFade(cfg.transition, s);
-							cc.director.pushScene(t);
-						}
-						break;
-					case eatfish.scene.StartLayerTag.btnHelp:
-						//点击了帮助按钮
-						
-						cc.audioEngine.playEffect(res.audios_btn_wav);
-						this.mainVisible(false);
-						this.helpVisible(true);
-						
-						break;
-					case eatfish.scene.StartLayerTag.helpBtnBack:
-						//在帮助界面点击了后退按钮
-						
-						cc.audioEngine.playEffect(res.audios_btn_wav);
-						this.mainVisible(true);
-						this.helpVisible(false);
-						
-						break;
+			case ccui.Widget.TOUCH_BEGAN:
+				
+				break;
+			case ccui.Widget.TOUCH_MOVED:
+		
+				break;
+			case ccui.Widget.TOUCH_ENDED:
+				{
+					switch(sender.getTag()) {					
+						case eatfish.scene.StartLayerTag.btnStart:
+							{
+								//开始游戏
+								var s = new eatfish.scene.GameScene();
+								var t = new cc.TransitionFade(cfg.transition, s);
+								cc.director.pushScene(t);
+							}
+							break;
+						case eatfish.scene.StartLayerTag.btnHelp:
+							//点击了帮助按钮
+							
+							cc.audioEngine.playEffect(res.audios_btn_wav);
+							this.mainVisible(false);
+							this.helpVisible(true);
+							
+							break;
+						case eatfish.scene.StartLayerTag.helpBtnBack:
+							//在帮助界面点击了后退按钮
+							
+							cc.audioEngine.playEffect(res.audios_btn_wav);
+							this.mainVisible(true);
+							this.helpVisible(false);
+							
+							break;
+					}
 				}
-			}
-			break;
-	}
+				break;
+		}
+			
+	},
+
+	mainVisible: function(visible) {
+		var title = this.getChildByTag(eatfish.scene.StartLayerTag.title);
+		var btnStart = this.getChildByTag(eatfish.scene.StartLayerTag.btnStart);
+		var btnHelp = this.getChildByTag(eatfish.scene.StartLayerTag.btnHelp);
+		title.setVisible(visible);
+		btnStart.setVisible(visible);
+		btnHelp.setVisible(visible);
+	},
+
+	helpVisible: function(visible) {
 		
-};
+		var help = this.getChildByTag(eatfish.scene.StartLayerTag.help);
+		var helpTitle = this.getChildByTag(eatfish.scene.StartLayerTag.helpTitle);
+		var helpLab1 = this.getChildByTag(eatfish.scene.StartLayerTag.helpLab1);
+		var helpLab2 = this.getChildByTag(eatfish.scene.StartLayerTag.helpLab2);
+		var helpLab3 = this.getChildByTag(eatfish.scene.StartLayerTag.helpLab3);	
+		var helpBtnBack = this.getChildByTag(eatfish.scene.StartLayerTag.helpBtnBack);	
+		
+		if(visible) {
+			cc.spriteFrameCache.addSpriteFrames(res.Fishtales_plist);
+			if(!help) {
+				var winSize = cc.director.getWinSize();
+				help = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("howtoplay.png"));
+				help.setPosition(winSize.width / 2, winSize.height / 2);
+				help.setTag(eatfish.scene.StartLayerTag.help);
+				this.addChild(help);
+			}
+			//title
+			if(!helpTitle) {
+				helpTitle = new cc.LabelTTF(strings.helpTitle, cfg.globalFontName02, 36, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
+				helpTitle.setTag(eatfish.scene.StartLayerTag.helpTitle);
+				helpTitle.setPosition(480, 535);
+				helpTitle.setFontFillColor(cc.color(255, 255, 0));
+				this.addChild(helpTitle);
+			}
+			//lab1
+			if(!helpLab1) {
+				helpLab1 = new cc.LabelTTF(strings.helpLab1, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
+				helpLab1.setTag(eatfish.scene.StartLayerTag.helpLab1);
+				helpLab1.setPosition(480, 385);
+				helpLab1.setFontFillColor(cc.color(255, 255, 255));
+				this.addChild(helpLab1);
 
-eatfish.scene.StartLayer.prototype.mainVisible = function(visible) {
-	var title = this.getChildByTag(eatfish.scene.StartLayerTag.title);
-	var btnStart = this.getChildByTag(eatfish.scene.StartLayerTag.btnStart);
-	var btnHelp = this.getChildByTag(eatfish.scene.StartLayerTag.btnHelp);
-	title.setVisible(visible);
-	btnStart.setVisible(visible);
-	btnHelp.setVisible(visible);
-};
+			}
+			//lab2
+			if(!helpLab2) {
+				helpLab2 = new cc.LabelTTF(strings.helpLab2, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
+				helpLab2.setTag(eatfish.scene.StartLayerTag.helpLab2);
+				helpLab2.setPosition(480, 245);
+				helpLab2.setFontFillColor(cc.color(255, 255, 255));
+				this.addChild(helpLab2);
 
-eatfish.scene.StartLayer.prototype.helpVisible = function(visible) {
-	
-	var help = this.getChildByTag(eatfish.scene.StartLayerTag.help);
-	var helpTitle = this.getChildByTag(eatfish.scene.StartLayerTag.helpTitle);
-	var helpLab1 = this.getChildByTag(eatfish.scene.StartLayerTag.helpLab1);
-	var helpLab2 = this.getChildByTag(eatfish.scene.StartLayerTag.helpLab2);
-	var helpLab3 = this.getChildByTag(eatfish.scene.StartLayerTag.helpLab3);	
-	var helpBtnBack = this.getChildByTag(eatfish.scene.StartLayerTag.helpBtnBack);	
-	
-	if(visible) {
-		cc.spriteFrameCache.addSpriteFrames(res.Fishtales_plist);
-		if(!help) {
-			var winSize = cc.director.getWinSize();
-			help = new cc.Sprite(cc.spriteFrameCache.getSpriteFrame("howtoplay.png"));
-			help.setPosition(winSize.width / 2, winSize.height / 2);
-			help.setTag(eatfish.scene.StartLayerTag.help);
-			this.addChild(help);
+			}
+			//lab3
+			if(!helpLab3) {
+				helpLab3 = new cc.LabelTTF(strings.helpLab3, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);			
+				helpLab3.setTag(eatfish.scene.StartLayerTag.helpLab3);
+				helpLab3.setPosition(480, 105);
+				helpLab3.setFontFillColor(cc.color(255, 255, 255));
+				this.addChild(helpLab3);
+				
+			}
+			if(!helpBtnBack) {
+				helpBtnBack = new ccui.Button();
+				helpBtnBack.loadTextureNormal(res.btn1_up_png);
+				helpBtnBack.loadTexturePressed(res.btn1_dw_png);
+				helpBtnBack.setPosition(830, 60);
+				helpBtnBack.addTouchEventListener(this.onButton, this);
+				helpBtnBack.setTag(eatfish.scene.StartLayerTag.helpBtnBack);
+				helpBtnBack.setTitleFontName(cfg.globalFontName01);
+				helpBtnBack.setTitleFontSize(32.0);
+				helpBtnBack.setTitleText(strings.startSceneBtnBack);
+				this.addChild(helpBtnBack);
+				
+			}
 		}
-		//title
-		if(!helpTitle) {
-			helpTitle = new cc.LabelTTF(strings.helpTitle, cfg.globalFontName02, 36, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
-			helpTitle.setTag(eatfish.scene.StartLayerTag.helpTitle);
-			helpTitle.setPosition(480, 535);
-			helpTitle.setFontFillColor(cc.color(255, 255, 0));
-			this.addChild(helpTitle);
+		else {		
+			if(help)
+				help.removeFromParent(true);
+			if(helpTitle)
+				helpTitle.removeFromParent(true);
+			if(helpLab1)
+				helpLab1.removeFromParent(true);
+			if(helpLab2)
+				helpLab2.removeFromParent(true);
+			if(helpLab3)
+				helpLab3.removeFromParent(true);
+			if(helpBtnBack)
+				helpBtnBack.removeFromParent(true);
+			cc.spriteFrameCache.removeSpriteFramesFromFile(res.Fishtales_plist);
+			cc.textureCache.removeTextureForKey("Fishtales.png");		
 		}
-		//lab1
-		if(!helpLab1) {
-			helpLab1 = new cc.LabelTTF(strings.helpLab1, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
-			helpLab1.setTag(eatfish.scene.StartLayerTag.helpLab1);
-			helpLab1.setPosition(480, 385);
-			helpLab1.setFontFillColor(cc.color(255, 255, 255));
-			this.addChild(helpLab1);
-
-		}
-		//lab2
-		if(!helpLab2) {
-			helpLab2 = new cc.LabelTTF(strings.helpLab2, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
-			helpLab2.setTag(eatfish.scene.StartLayerTag.helpLab2);
-			helpLab2.setPosition(480, 245);
-			helpLab2.setFontFillColor(cc.color(255, 255, 255));
-			this.addChild(helpLab2);
-
-		}
-		//lab3
-		if(!helpLab3) {
-			helpLab3 = new cc.LabelTTF(strings.helpLab3, cfg.globalFontName01, 24, cc.size(0, 0), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);			
-			helpLab3.setTag(eatfish.scene.StartLayerTag.helpLab3);
-			helpLab3.setPosition(480, 105);
-			helpLab3.setFontFillColor(cc.color(255, 255, 255));
-			this.addChild(helpLab3);
-			
-		}
-		if(!helpBtnBack) {
-			helpBtnBack = new ccui.Button();
-			helpBtnBack.loadTextureNormal(res.btn1_up_png);
-			helpBtnBack.loadTexturePressed(res.btn1_dw_png);
-			helpBtnBack.setPosition(830, 60);
-			helpBtnBack.addTouchEventListener(this.onButton, this);
-			helpBtnBack.setTag(eatfish.scene.StartLayerTag.helpBtnBack);
-			helpBtnBack.setTitleFontName(cfg.globalFontName01);
-			helpBtnBack.setTitleFontSize(32.0);
-			helpBtnBack.setTitleText(strings.startSceneBtnBack);
-			this.addChild(helpBtnBack);
-			
-		}
-	}
-	else {		
-		if(help)
-			help.removeFromParent(true);
-		if(helpTitle)
-			helpTitle.removeFromParent(true);
-		if(helpLab1)
-			helpLab1.removeFromParent(true);
-		if(helpLab2)
-			helpLab2.removeFromParent(true);
-		if(helpLab3)
-			helpLab3.removeFromParent(true);
-		if(helpBtnBack)
-			helpBtnBack.removeFromParent(true);
-		cc.spriteFrameCache.removeSpriteFramesFromFile(res.Fishtales_plist);
-		cc.textureCache.removeTextureForKey("Fishtales.png");		
+		
 	}
 	
-};
+});
 
 eatfish.scene.StartScene = cc.Scene.extend({
 	onEnter:function () {

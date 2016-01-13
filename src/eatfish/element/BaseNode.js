@@ -26,54 +26,54 @@ eatfish.element.BaseNode = cc.Node.extend({
 		this._super();
 		
 		return true;
-	}
-});
+	},
+	centerRect: function() {
 
-eatfish.element.BaseNode.prototype.centerRect = function() {
+		var center = this.getChildByTag(eatfish.element.BaseNodeTag.centerPoint);
+		if(!center)
+			return cc.rect(0, 0, 0, 0);
+		var point = cc.p(center.getBoundingBox().x, center.getBoundingBox().y);
+		point = this.convertToWorldSpace(point);
+		return cc.rect(point.x, point.y, center.getContentSize().width, center.getContentSize().height);	
+	},
 
-	var center = this.getChildByTag(eatfish.element.BaseNodeTag.centerPoint);
-	if(!center)
-		return cc.rect(0, 0, 0, 0);
-	var point = cc.p(center.getBoundingBox().x, center.getBoundingBox().y);
-	point = this.convertToWorldSpace(point);
-	return cc.rect(point.x, point.y, center.getContentSize().width, center.getContentSize().height);	
-};
+	pause: function() {
+		if(this.getChildByTag(eatfish.element.BaseNodeTag.mainObj))
+			this.getChildByTag(eatfish.element.BaseNodeTag.mainObj).pause();
+		
+		this._super();
+	},
 
-eatfish.element.BaseNode.prototype.pause = function() {
-	if(this.getChildByTag(eatfish.element.BaseNodeTag.mainObj))
-		this.getChildByTag(eatfish.element.BaseNodeTag.mainObj).pause();
+	resume: function() {
+		if(this.getChildByTag(eatfish.element.BaseNodeTag.mainObj))
+			this.getChildByTag(eatfish.element.BaseNodeTag.mainObj).resume();
 
-	cc.Node.prototype.pause.call(this);
-};
+		this._super();
+	},
 
-eatfish.element.BaseNode.prototype.resume = function() {
-	if(this.getChildByTag(eatfish.element.BaseNodeTag.mainObj))
-		this.getChildByTag(eatfish.element.BaseNodeTag.mainObj).resume();
+	playAnim: function(frameDelay) {
+		
+		if(!frameDelay)
+			frameDelay = 0.1
+		
+		var anim = cc.animationCache.getAnimation(this.animKey);
+		var mainObj = this.getChildByTag(eatfish.element.BaseNodeTag.mainObj);
+		if(!anim) {
+			var frames = new Array();
 
-	cc.Node.prototype.resume.call(this);
-};
+			for(var i = 0; i < this.animSpriteList.length; i++) {
+				frames.push(cc.spriteFrameCache.getSpriteFrame(this.animSpriteList[i]));
+			}
 
-eatfish.element.BaseNode.prototype.playAnim = function(frameDelay) {
-	
-	if(!frameDelay)
-		frameDelay = 0.1
-	
-	var anim = cc.animationCache.getAnimation(this.animKey);
-	var mainObj = this.getChildByTag(eatfish.element.BaseNodeTag.mainObj);
-	if(!anim) {
-		var frames = new Array();
-
-		for(var i = 0; i < this.animSpriteList.length; i++) {
-			frames.push(cc.spriteFrameCache.getSpriteFrame(this.animSpriteList[i]));
+			anim = new cc.Animation(frames);
+			anim.setDelayPerUnit(frameDelay);
+			anim.setRestoreOriginalFrame(false);
+			cc.animationCache.addAnimation(anim, this.animKey);
+			this.setContentSize(frames[0].getOriginalSize());
 		}
-
-		anim = new cc.Animation(frames);
-		anim.setDelayPerUnit(frameDelay);
-		anim.setRestoreOriginalFrame(false);
-		cc.animationCache.addAnimation(anim, this.animKey);
-		this.setContentSize(frames[0].getOriginalSize());
+		mainObj.stopAllActions();
+		var animate = cc.repeatForever(cc.animate(anim));
+		mainObj.runAction(animate);
 	}
-	mainObj.stopAllActions();
-	var animate = cc.repeatForever(cc.animate(anim));
-	mainObj.runAction(animate);
-};
+	
+});

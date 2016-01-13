@@ -95,71 +95,71 @@ eatfish.element.DialogNode = cc.Node.extend({
 		this.runAction(cc.Sequence.create(cc.EaseElasticOut.create(cc.ScaleTo.create(1, 1)), cc.CallFunc.create(this.showActEnd, this)));
 
 		return true;
-	}
-});
+	},
+	setBtn1Text: function(text) {
+		var btn1 = this.getChildByTag(eatfish.element.DialogNodeTag.btn1);
+		btn1.setTitleText(text);
+	},
 
-eatfish.element.DialogNode.prototype.setBtn1Text = function(text) {
-	var btn1 = this.getChildByTag(eatfish.element.DialogNodeTag.btn1);
-	btn1.setTitleText(text);
-};
+	setBtn2Text: function(text) {
+		var btn2 = this.getChildByTag(eatfish.element.DialogNodeTag.btn2);
+		btn2.setTitleText(text);
+	},
 
-eatfish.element.DialogNode.prototype.setBtn2Text = function(text) {
-	var btn2 = this.getChildByTag(eatfish.element.DialogNodeTag.btn2);
-	btn2.setTitleText(text);
-};
+	setLabTitleText: function(text) {
+		var labTitle = this.getChildByTag(eatfish.element.DialogNodeTag.labTitle);
+		labTitle.setString(text);
+	},
 
-eatfish.element.DialogNode.prototype.setLabTitleText = function(text) {
-	var labTitle = this.getChildByTag(eatfish.element.DialogNodeTag.labTitle);
-	labTitle.setString(text);
-};
+	setLabTitleContent: function(text) {
+		var labContent = this.getChildByTag(eatfish.element.DialogNodeTag.labContent);
+		labContent.setString(text);
+	},
 
-eatfish.element.DialogNode.prototype.setLabTitleContent = function(text) {
-	var labContent = this.getChildByTag(eatfish.element.DialogNodeTag.labContent);
-	labContent.setString(text);
-};
+	setBtn1Callback: function(callback) {
+		this.btn1Callback = callback;
+	},
 
-eatfish.element.DialogNode.prototype.setBtn1Callback = function(callback) {
-	this.btn1Callback = callback;
-};
+	setBtn2Callback: function(callback) {
+		this.btn2Callback = callback;
+	},
 
-eatfish.element.DialogNode.prototype.setBtn2Callback = function(callback) {
-	this.btn2Callback = callback;
-};
+	showActEnd: function() {
+		var btn1 = this.getChildByTag(eatfish.element.DialogNodeTag.btn1);
+		var btn2 = this.getChildByTag(eatfish.element.DialogNodeTag.btn2);
+		
+		if(btn1)
+			btn1.setEnabled(true);
+		if(btn2)
+			btn2.setEnabled(true);
+	},
 
-eatfish.element.DialogNode.prototype.showActEnd = function() {
-	var btn1 = this.getChildByTag(eatfish.element.DialogNodeTag.btn1);
-	var btn2 = this.getChildByTag(eatfish.element.DialogNodeTag.btn2);
-	
-	if(btn1)
-		btn1.setEnabled(true);
-	if(btn2)
-		btn2.setEnabled(true);
-};
-
-eatfish.element.DialogNode.prototype.onButton = function(sender, eventType) {
-	switch(eventType) {
-		case ccui.Widget.TOUCH_BEGAN:
-			break;
-		case ccui.Widget.TOUCH_MOVED:
-			break;
-		case ccui.Widget.TOUCH_ENDED:
-			{
-				switch(sender.getTag()) {
-					case eatfish.element.DialogNodeTag.btn2:
-						{
-							if (this.btn2Callback)
-								this.runAction(this.btn2Callback);
-								//this.removeFromParent(true);
-						}
-						break;
-					default:
-						{
-							if (this.btn1Callback)
-								this.runAction(this.btn1Callback);
-						}
-						break;
+	onButton: function(sender, eventType) {
+		switch(eventType) {
+			case ccui.Widget.TOUCH_BEGAN:
+				break;
+			case ccui.Widget.TOUCH_MOVED:
+				break;
+			case ccui.Widget.TOUCH_ENDED:
+				{
+					switch(sender.getTag()) {
+						case eatfish.element.DialogNodeTag.btn2:
+							{
+								if (this.btn2Callback)
+									this.runAction(this.btn2Callback);
+									//this.removeFromParent(true);
+							}
+							break;
+						default:
+							{
+								if (this.btn1Callback)
+									this.runAction(this.btn1Callback);
+							}
+							break;
+					}
 				}
-			}
-			break;
+				break;
+		}
 	}
-};
+
+});

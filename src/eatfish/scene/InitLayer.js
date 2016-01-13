@@ -13,14 +13,13 @@ eatfish.scene.InitLayer = eatfish.scene.BaseLayer.extend({
 		this.scheduleOnce(this.goToStartLayer, 3.0);
 		
 		return true;
+	},	
+	goToStartLayer: function(delay) {
+		var s = new eatfish.scene.StartScene();
+		var t = new cc.TransitionFade(cfg.transition, s);
+		cc.director.pushScene(t);
 	}
 });
-
-eatfish.scene.InitLayer.prototype.goToStartLayer = function(delay) {
-	var s = new eatfish.scene.StartScene();
-	var t = new cc.TransitionFade(cfg.transition, s);
-	cc.director.pushScene(t);
-}
 
 eatfish.scene.InitScene = cc.Scene.extend({
 	onEnter:function () {
