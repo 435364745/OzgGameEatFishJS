@@ -88,17 +88,33 @@ eatfish.element.BaseFishNode = eatfish.element.BaseNode.extend({
 		var act3 = act2.reverse();
 		var act4 = cc.MoveBy.create(0.01, cc.p(3, 0));
 		
+		var curr_obj = this;
 		//麻痹5秒后恢复正常
 		this.runAction(cc.Sequence.create(
 			act1, 
 			act2, 
 			act3, 
 			act4, 
+			cc.CallFunc.create(function() {
+				curr_obj.isMoving = false;
+			}, this),
 			cc.DelayTime.create(5.0), 
 			cc.CallFunc.create(function() {
-				this.playAnim();
-				this.isMoving = true;
-				this.effectStatus = eatfish.element.BaseFishNodeEffectStatus.normal;
+				curr_obj.playAnim();
+				curr_obj.isMoving = true;
+				curr_obj.effectStatus = eatfish.element.BaseFishNodeEffectStatus.normal;
+				
+				//如果不是player的话则执行下面的继续移动
+				if(curr_obj.getTag() != eatfish.scene.GameLayerTag.fishPlayer) {
+					curr_obj.moveTime -= curr_obj.moveTimeElapsed;
+					curr_obj.runAction(cc.Sequence.create(
+						cc.MoveTo.create(curr_obj.moveTime, curr_obj.moveEndPoint), 
+						cc.CallFunc.create(function() {
+							curr_obj.removeFromParent(true);
+						}, curr_obj)
+					));
+				}
+				
 			}, this)
 		));
 	},

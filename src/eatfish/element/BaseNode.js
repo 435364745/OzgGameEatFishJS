@@ -54,7 +54,7 @@ eatfish.element.BaseNode = cc.Node.extend({
 	playAnim: function(frameDelay) {
 		
 		if(!frameDelay)
-			frameDelay = 0.1
+			frameDelay = 0.1;
 		
 		var anim = cc.animationCache.getAnimation(this.animKey);
 		var mainObj = this.getChildByTag(eatfish.element.BaseNodeTag.mainObj);

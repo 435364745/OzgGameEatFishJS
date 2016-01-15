@@ -57,9 +57,7 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		this.stageClear = cfg.stageClear;
 		this.playerStatusNormal = parseInt(parseFloat(this.stageClear) * 0.29 + 0.5);
 		this.playerStatusBig = parseInt(parseFloat(this.stageClear) * 0.61 + 0.5);
-		
-		this.isTouchEnabled = false;
-		
+				
 		cc.spriteFrameCache.addSpriteFrames(res.Fishtales_plist);
 		cc.spriteFrameCache.addSpriteFrames(res.Fishall_plist);
 		cc.spriteFrameCache.addSpriteFrames(res.cump_plist);
@@ -141,12 +139,13 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 		fishLifeLab.setFontFillColor(cc.color(255, 255, 255));
 		this.addChild(fishLifeLab);
 		
-		cc.eventManager.addListener({
+		this.touchListener = cc.EventListener.create({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: this.onLayerTouchBegan,
 			onTouchMoved: this.onLayerTouchMoved,
 			onTouchEnded: this.onLayerTouchEnded
-		}, this);
+		});
+		cc.eventManager.addListener(this.touchListener, this);
 		
 		//player
 		var player = new eatfish.element.PlayerNode();
@@ -861,11 +860,14 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 	},
 
 	enabledTouchEvent: function(enabled) {
-		this.isTouchEnabled = enabled;
+		if(enabled)
+			cc.eventManager.addListener(this.touchListener, this);
+		else
+			cc.eventManager.removeListener(this.touchListener);
 		
 		var btnPause = this.getChildByTag(eatfish.scene.GameLayerTag.btnPause);
 		btnPause.setEnabled(enabled);
-			
+		
 	},
 
 	//点击事件 end
@@ -876,9 +878,6 @@ eatfish.scene.GameLayer = eatfish.scene.BaseLayer.extend({
 	},
 
 	onLayerTouchMoved: function(touch, event) {
-
-		if(!event.getCurrentTarget().isTouchEnabled)
-			return;
 		
 		var winSize = cc.director.getWinSize();
 		

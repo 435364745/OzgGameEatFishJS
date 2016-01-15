@@ -23,17 +23,10 @@ eatfish.element.BaseEnemyFishNode = eatfish.element.BaseFishNode.extend({
 	},
 
 	update: function(delta) {
-		this.moveTimeElapsed += delta;
+		if(this.isMoving) {
+			this.moveTimeElapsed += delta;
+		}
+		
 	}
 
-	//paralysisEnd: function(sender) {
-	//	this._super(sender);
-	//
-	//	//继续移动
-	//	this.scheduleUpdate();
-	//	
-	//	var gameSceneLayer = this.getParent().getParent();
-	////	this.runAction(cc.Sequence.create(cc.MoveTo.create(this.moveTime - this.moveTimeElapsed, this.moveEndPoint), cc.CallFunc.create(gameSceneLayer.enemyFishMoveEnd, gameSceneLayer, this)));
-	//
-	//}
 });
