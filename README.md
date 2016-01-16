@@ -9,14 +9,6 @@ OzgGame—大鱼吃小鱼
 
 ================
 
-本游戏的cocos2d-iphone版本：https://github.com/ouzhigang/ozggame_eat_fish
-
-本游戏的cocos2d-x版本：https://github.com/ouzhigang/OzgGameEatFish
-
-本游戏的swift版本：https://github.com/ouzhigang/OzgGameEatFishSwift
-
-================
-
 运行状况
 
 ![](https://raw.github.com/ouzhigang/OzgGameEatFishJS/master/screenshot.jpg)
